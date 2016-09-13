@@ -1,0 +1,6 @@
+code,email,msg,subject,flag,count,attach1,attach2,attach3
+BR1RP,BusinessReporting.Canada@henryschein.ca,msg1: one attachment,test1,yes,1,201602_AZ1CI_Top15.pdf,,
+BR2RP,BusinessReporting.Canada@henryschein.ca,msg2: two attachments,test2,yes,2,201602_AZ1CI_Top15.pdf,201602_AZ1CI_Top15.pdf,
+BR3RP,BusinessReporting.Canada@henryschein.ca,msg3:  no attachments,test3,no,0,,,
+BR4RP,BusinessReporting.Canada@henryschein.ca,msg4: no attchments,test4,no,0,,,
+BR5RP,BusinessReporting.Canada@henryschein.ca,msg5: three attachments,test5,yes,3,201602_AZ1CI_Top15.pdf,201602_AZ1CI_Top15.pdf,201602_AZ1CI_Top15.pdf
