@@ -1,17 +1,8 @@
 ﻿
+
 $smtp=$env:BR_Mailing_Server
 
 $path=$env:br_mailing_path  #(get-location) 
-
-
-$Logfile = "$path" + "\log\mailing.log" #attach\" #"D:\Apps\Logs\$(gc env:computername).log"
-
-Function LogWrite
-{
-   Param ([string]$logstring)
-
-   Add-content $Logfile -value $logstring
-}
 
 
 Clear-Host
@@ -19,13 +10,14 @@ if (!(test-path ` HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\T
 {new-eventlog -Logname Application -source TOP15FSC `
 -ErrorAction SilentlyContinue}
 
+
+
 $list=import-csv ($path + "mailing list.csv")
 
 $startTime = Get-date
 $startLog = 'Top15 FSC reports started at ' +$startTime+ ' local time' 
 
-#'Write-Eventlog -Logname Application -Message $startLog -Source 'TOP15FSC'
-write-eventlog -logname Application -message $startlog -source 'TOP15FSC' -ENTRYTYPE infomration -EventId 1 -category 0
+Write-Eventlog -Logname Application -Message $startLog -Source 'TOP15FSC ` -id 1 -entrytype Information -Category  0
 
 foreach ($i in $list)
 {	
@@ -59,7 +51,7 @@ try{
 		
 	send-mailmessage -smtpserver $smtp -to $i.email -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high @params #-attachments "S:\Business Reporting\Jennifer\Project\script\attach\201602_AZ1CI_Top15.pdf" 
 LogWrite ($attachments  + " sent to " + $i.email + " on success")
-#echo $i.msg + "sent to" + $i.email
+##echo $i.msg + "sent to" + $i.email
 }
 catch
 {
