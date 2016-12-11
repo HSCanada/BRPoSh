@@ -21,11 +21,7 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
 
 $list=import-csv ($path + "mailing list v6.csv")
 
-#$list=import-csv ($path + "mailing list v6 - ME.csv")
-#$list=import-csv ($path + "mailing list FSC comm.csv")
-#$list=import-csv ($path + "mailing list FSC comm - test.csv")
-#$list=import-csv ($path + "mailing list EST comm - test.csv")
-#$list=import-csv ($path + "mailing list EST comm.csv")
+
 
 $startTime = Get-date
 #$startLog = 'Top15 FSC -' +$startTime
