@@ -1,2 +1,0 @@
-# BRPoSh
-Power Shell Scripts
