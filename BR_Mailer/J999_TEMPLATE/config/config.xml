@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<Config>
+  <Global>
+    <SMTPServer>10.80.13.15</SMTPServer>
+    <EmailAddress>BusinessReporting.Canada@henryschein.ca</EmailAddress>
+    <FriendlyName>Business Reporting - Canada</FriendlyName>
+    <Folder>S:\Business Reporting\DailySales\Daily Sales Reporting\Sendfiles</Folder>
+    <XLSFile>S:\Business Reporting\Share\Email Master Send\ETU_Builder_Driver_TMP.xls</XLSFile>
+    <SMTPUsername />
+    <SMTPPassword />
+    <BodyPart>S:\Business Reporting\Share\Email Master Send\ETU_Weekly_FSC_Sales\Email.Msg.Body\ETU_MSG_Weekly_FSC_Sales.htm</BodyPart>
+    <EmailDelay>0</EmailDelay>
+    <Reconnect>100</Reconnect>
+    <ReconnectPause>2</ReconnectPause>
+    <UseWordDocument>true</UseWordDocument>
+    <Counter>1</Counter>
+  </Global>
+</Config>
