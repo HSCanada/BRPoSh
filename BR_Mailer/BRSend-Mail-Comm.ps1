@@ -21,7 +21,6 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
 
 $list=import-csv ($path + "mailing list v6.csv")
 
-
 #$list=import-csv ($path + "mailing list v6 - ME.csv")
 #$list=import-csv ($path + "mailing list FSC comm.csv")
 #$list=import-csv ($path + "mailing list FSC comm - test.csv")
@@ -91,7 +90,7 @@ foreach ($i in $list)
 
         try{
 		
-	        send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high @params 
+	        send-mailmessage -smtpserver $smtp -to $emailarray -from "Commissions.Agent@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high @params 
             #write-eventlog -logname Application -message ( 'Top15 FSC -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
             write-eventlog -logname Application -message ( 'Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
             #LogWrite ($attachments  + " sent to " + $i.email + " on success")
@@ -111,7 +110,7 @@ foreach ($i in $list)
     
         $emailarray  = $I.EMAIL -split ','
             try{
-                send-mailmessage -smtpserver $smtp -to $emailarray  -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high 
+                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Commissions.Agent@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high 
                 #write-eventlog -logname Application -message ( 'Top15 FSC -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                 write-eventlog -logname Application -message ( 'Branch Daily Sales -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                 #LogWrite ($attachments + "sent to" + $i.email)
@@ -122,13 +121,7 @@ foreach ($i in $list)
                     #write-eventlog -logname Application -message ('Top15 FSC -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
                     write-eventlog -logname Application -message ('Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
             }
-      }
-      else
-       
-      {
-            echo "flag set to 0, no message sent"
-      }
-    
+    }
 
 }
 
