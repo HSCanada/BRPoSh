@@ -6,22 +6,26 @@ $path=$env:br_mailing_path  #(get-location)
 
 $Logfile = "$path" + "\log\mailing.log" #attach\" #"D:\Apps\Logs\$(gc env:computername).log"
 
+
+
 Function LogWrite
 {
-   Param ([string]$logstring)
+   Param ([heltring]$logstring)
 
    Add-content $Logfile -value $logstring
 }
 
+$body=get-content ($path +"J051_TOP15_FSC\ETU_MSG_FSC_Top_15.htm") | out-string
 
 Clear-Host
 if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC))`
     {new-eventlog -Logname Application -source BRC `
     -ErrorAction SilentlyContinue}
 
-$list=import-csv ($path + "mailing list v6.csv")
+#$list=import-csv ($path + "mailing list v6.csv")
 
-#$list=import-csv ($path + "J051_TOP15_FSC\"+"mailing list - Top15 - test.csv")
+
+$list=import-csv ($path + "J051_TOP15_FSC\"+"mailing list - Top15 - test.csv")
 
 #$list=import-csv ($path + "mailing list v6 - ME.csv")
 #$list=import-csv ($path + "mailing list FSC comm.csv")
@@ -92,7 +96,8 @@ foreach ($i in $list)
 
         try{
 		
-	        send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high @params 
+	        send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml -priority  high @params 
+            #send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high @params 
             #write-eventlog -logname Application -message ( 'Top15 FSC -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
             write-eventlog -logname Application -message ( 'Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
             #LogWrite ($attachments  + " sent to " + $i.email + " on success")
