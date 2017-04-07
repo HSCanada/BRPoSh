@@ -4,7 +4,7 @@ $smtp=$env:BR_Mailing_Server
 $path=$env:br_mailing_path  #(get-location) 
 
 
-$Logfile = "$path" + "\log\mailing.log" 
+$Logfile = "$path" + "log\mailing.log" 
 
 
 
@@ -16,7 +16,7 @@ Function LogWrite
 }
 
 # Path & file name for msg body
-$body=get-content ($path +"J051_TOP15_FSC\Email.Msg.Body\ETU_MSG_FSC_Top_15.htm") | out-string
+$body=get-content ($path +"J050_TOP15_FSC_BR\Email.Msg.Body\ETU_MSG_FSC_Top_15.htm") | out-string
 
 
 Clear-Host
@@ -25,12 +25,12 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
     -ErrorAction SilentlyContinue}
 
 # Path & file name for mailing list
-$list=import-csv ($path + "J051_TOP15_FSC\"+"J051_Mailing_List.csv")
+$list=import-csv ($path + "J050_TOP15_FSC_BR\"+"J050_Mailing_List.csv")
 
 
 
 $startTime = Get-date
-$startLog = 'Top15 -' +$startTime
+$startLog = 'Top15 BR -' +$startTime
 
 
 
@@ -97,13 +97,13 @@ foreach ($i in $list)
 	       send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
          
-            write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+            write-eventlog -logname Application -message ( 'Top15 BR -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
            
          }
         catch
          {
              echo "sending message failed"
-             write-eventlog -logname Application -message ('Top15 -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+             write-eventlog -logname Application -message ('Top15 BR -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
 
         }
  
@@ -115,13 +115,13 @@ foreach ($i in $list)
             try{
                 send-mailmessage -smtpserver $smtp -to $emailarray  -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
-                write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+                write-eventlog -logname Application -message ( 'Top15 BR -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                
             }
             catch{
                     echo "sending message failed"
                    
-                    write-eventlog -logname Application -message ('Top15 -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+                    write-eventlog -logname Application -message ('Top15 BR -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
             }
       }
       else

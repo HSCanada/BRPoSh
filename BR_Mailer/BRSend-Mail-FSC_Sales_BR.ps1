@@ -16,7 +16,7 @@ Function LogWrite
 }
 
 # Path & file name for msg body
-$body=get-content ($path +"J051_TOP15_FSC\Email.Msg.Body\ETU_MSG_FSC_Top_15.htm") | out-string
+$body=get-content ($path +"J020_DS_FSC_BR\Email.Msg.Body\ETU_MSG_FSC_Sales_Mgr.htm") | out-string
 
 
 Clear-Host
@@ -25,12 +25,12 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
     -ErrorAction SilentlyContinue}
 
 # Path & file name for mailing list
-$list=import-csv ($path + "J051_TOP15_FSC\"+"J051_Mailing_List.csv")
+$list=import-csv ($path + "J020_DS_FSC_BR\"+"J020_Mailing_List.csv")
 
 
 
 $startTime = Get-date
-$startLog = 'Top15 -' +$startTime
+$startLog = 'FSC Sales -' +$startTime
 
 
 
@@ -67,7 +67,7 @@ foreach ($i in $list)
         if($i.attach3){
 
 		
-	    $attachments=@()
+		    $attachments=@()
             $attach=@()
 
 
@@ -88,22 +88,23 @@ foreach ($i in $list)
 	
 	    $params['Attachments'] = $attachments
 	
-       	    $emailarray  = $I.EMAIL -split ','
+        $emailarray  = $I.EMAIL -split ','
 
         try{
 
-      
+
 		
 	       send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
-         
-            write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+ 
+            write-eventlog -logname Application -message ( 'Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
            
          }
         catch
          {
              echo "sending message failed"
-             write-eventlog -logname Application -message ('Top15 -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+            
+             write-eventlog -logname Application -message ('Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
 
         }
  
@@ -115,13 +116,13 @@ foreach ($i in $list)
             try{
                 send-mailmessage -smtpserver $smtp -to $emailarray  -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
-                write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
-               
+                write-eventlog -logname Application -message ( 'Branch Daily Sales -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+                
             }
             catch{
                     echo "sending message failed"
-                   
-                    write-eventlog -logname Application -message ('Top15 -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+                    
+                    write-eventlog -logname Application -message ('Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
             }
       }
       else
@@ -132,5 +133,3 @@ foreach ($i in $list)
     
 
 }
-
-

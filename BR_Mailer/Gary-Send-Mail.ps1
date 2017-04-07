@@ -16,7 +16,7 @@ Function LogWrite
 }
 
 # Path & file name for msg body
-$body=get-content ($path +"J051_TOP15_FSC\Email.Msg.Body\ETU_MSG_FSC_Top_15.htm") | out-string
+$body=get-content ("S:\hr\Business Reporting\2017 Benefit Update\Email to TSM - FINAL.htm") | out-string
 
 
 Clear-Host
@@ -25,12 +25,12 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
     -ErrorAction SilentlyContinue}
 
 # Path & file name for mailing list
-$list=import-csv ($path + "J051_TOP15_FSC\"+"J051_Mailing_List.csv")
+$list=import-csv ("S:\hr\Business Reporting\2017 Benefit Update\"+"J020_Mailing_List.csv")
 
 
 
 $startTime = Get-date
-$startLog = 'Top15 -' +$startTime
+$startLog = 'HR_Ben -' +$startTime
 
 
 
@@ -94,16 +94,16 @@ foreach ($i in $list)
 
       
 		
-	       send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
+	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Sam.Crowe@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
          
-            write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+            write-eventlog -logname Application -message ( 'HR Ben -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
            
          }
         catch
          {
              echo "sending message failed"
-             write-eventlog -logname Application -message ('Top15 -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+             write-eventlog -logname Application -message ('HR Ben -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
 
         }
  
@@ -113,15 +113,15 @@ foreach ($i in $list)
     
         $emailarray  = $I.EMAIL -split ','
             try{
-                send-mailmessage -smtpserver $smtp -to $emailarray  -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
+                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Sam.Crowe@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
-                write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+                write-eventlog -logname Application -message ( 'HR Ben -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                
             }
             catch{
                     echo "sending message failed"
                    
-                    write-eventlog -logname Application -message ('Top15 -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+                    write-eventlog -logname Application -message ('HR Ben -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
             }
       }
       else
