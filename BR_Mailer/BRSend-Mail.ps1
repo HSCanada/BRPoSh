@@ -30,7 +30,7 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
 
 #branch DS mailing list
 
-$list=import-csv ("S:\Business Reporting\RegularReports\Daily\Daily_Sales\Working\J011_Mailing_List.csv")
+$list=import-csv ("S:\Business Reporting\BR_Sales\Working\J011_Mailing_List.csv")
 
 $startTime = Get-date
 $startLog = 'Branch Daily Sales -' +$startTime
