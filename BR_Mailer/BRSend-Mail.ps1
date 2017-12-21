@@ -3,6 +3,10 @@
 	#BR_Mailing_Path: 	S:\Business Reporting\ZDEV_BR_Scripts\BRPoSh\BR_Mailer\
 	#BR_Mailing_Server: 	usnymexhub1.us.hsi.local
 
+#on moving to window 10, need to set new script execution policy using ADMIN on Windows Powershell ISE: Set-ExecutionPolicy unrestricted
+#need to register: BRC for event log ( regedit: local maching: HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\application\BRC)
+
+
 $smtp=$env:BR_Mailing_Server
 
 $path=$env:br_mailing_path  
@@ -23,8 +27,8 @@ Function LogWrite
 
 
 Clear-Host
-if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC))`
-    {new-eventlog -Logname Application -source BRC `
+if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\application\BRC))`
+    {new-eventlog -Logname Application -source BRC `  #{new-eventlog -Logname Application -source BRC `
     -ErrorAction SilentlyContinue}
 
 
