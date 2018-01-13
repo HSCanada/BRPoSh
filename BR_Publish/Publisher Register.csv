@@ -1,0 +1,4 @@
+ActionType,ActionID,Action Description,Action Originator,Frequency,message,,mailing list Prod,mailing list Dev
+M,100,Top15,Jennifer Li,monthly,,,S:\Business Reporting\zDev\BR_Scripts\BRPoSh\BR_Mailer\J051_TOP15_FSC\J051_Mailing_List.csv,S:\Business Reporting\zDev\BR_Scripts\BRPoSh\BR_Mailer\J051_TOP15_FSC\J051_Mailing_List_Dev.csv
+M,100,Top15 Branch,Jennifer Li,monthly,,,S:\Business Reporting\zDev\BR_Scripts\BRPoSh\BR_Mailer\J050_TOP15_FSC_BR\J050_Mailing_List.csv,S:\Business Reporting\zDev\BR_Scripts\BRPoSh\BR_Mailer\J050_TOP15_FSC_BR\J050_Mailing_List_Dev.csv
+C,,,,,,,,
