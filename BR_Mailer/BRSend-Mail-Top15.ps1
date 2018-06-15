@@ -34,7 +34,7 @@ $startLog = 'Top15 -' +$startTime
 
 
 
-write-eventlog -logname Application -message $startlog -source BRC -ENTRYTYPE information -EventId 1 -category 0 
+write-eventlog -logname Application -message $startlog -source BRC -ENTRYTYPE information -EventId 2 -category 1
 
 foreach ($i in $list)
 {	
@@ -97,7 +97,7 @@ foreach ($i in $list)
 	       send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
          
-            write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+            write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 2 -category 1
            
          }
         catch
@@ -115,7 +115,7 @@ foreach ($i in $list)
             try{
                 send-mailmessage -smtpserver $smtp -to $emailarray  -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
-                write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+                write-eventlog -logname Application -message ( 'Top15 -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 2 -category 1
                
             }
             catch{
