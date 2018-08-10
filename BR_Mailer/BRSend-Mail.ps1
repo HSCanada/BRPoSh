@@ -1,6 +1,6 @@
 ﻿
 #before using this mailer, two the following system environment variables need to be set up: 
-	#BR_Mailing_Path: 	S:\Business Reporting\ZDEV_BR_Scripts\BRPoSh\BR_Mailer\
+	#BR_Mailing_Path: 	S:\BR\ZDEV_BR_Scripts\BRPoSh\BR_Mailer\
 	#BR_Mailing_Server: 	usnymexhub1.us.hsi.local
 
 #on moving to window 10, need to set new script execution policy using ADMIN on Windows Powershell ISE: Set-ExecutionPolicy unrestricted
@@ -34,7 +34,7 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\application\BRC
 
 #branch DS mailing list
 
-$list=import-csv ("S:\Business Reporting\BR_Sales\Working\J011_Mailing_List.csv")
+$list=import-csv ("S:\BR\BR_Sales\Working\J011_Mailing_List.csv")
 
 $startTime = Get-date
 $startLog = 'Branch Daily Sales -' +$startTime
