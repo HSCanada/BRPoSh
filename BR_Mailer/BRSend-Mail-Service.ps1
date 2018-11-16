@@ -1,5 +1,6 @@
 ﻿# Send Service Email
-# 12 Nov 18
+# created by jli
+# 16 Nov 18, tmc, mail from updated
 
 $smtp=$env:BR_Mailing_Server
 
@@ -78,7 +79,7 @@ foreach ($i in $list)
 
         try{ 
 		
-	       send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
+	       send-mailmessage -smtpserver $smtp -to $emailarray -from "David.Pinto@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
           
          }
@@ -96,7 +97,7 @@ foreach ($i in $list)
             try{
 
                 #Write-Host $body
-                send-mailmessage -smtpserver $smtp -to $emailarray  -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
+                send-mailmessage -smtpserver $smtp -to $emailarray  -from "David.Pinto.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
               
             }
@@ -109,7 +110,7 @@ foreach ($i in $list)
        
       {
              try{
-                send-mailmessage -smtpserver $smtp -to $emailarray  -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
+                send-mailmessage -smtpserver $smtp -to $emailarray  -from "David.Pinto.canada@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
                
             }
