@@ -17,7 +17,7 @@ $path=$path + 'service\'
 $list=import-csv ($path + 'Service_Mailing_List.csv')
 
 # Load message body as HTML
-$mail_body=get-content ($path +'Email.Msg.Body\Service - Mail Body3.htm') | out-string
+$mail_body=get-content ($path +'Email.Msg.Body\Service - Mail Body.htm') | out-string
 
 # Set from / Subject
 $mail_from = 'David.Pinto@henryschein.ca'
