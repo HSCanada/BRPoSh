@@ -1,74 +1,67 @@
 ﻿# Send Service Email
 # created by jli
-# 16 Nov 18, tmc, mail from updated
+# 20 Nov 18, tmc, mail from updated
 
 # todo:  
-#  group email?
-#  make parameter driven (body, emails, attach) -- flowchat
-
+# make this parameter driven (body, emails, attach) 
+# log status, performance   
 # Set email server 
-$smtp=$env:BR_Mailing_Server
 
-# Set email parameters location
+$mail_smtp=$env:BR_Mailing_Server
+
+# Set job parameters path
 $path=$env:br_mailing_path
 $path=$path + 'service\'
 
-# Load mailing list
+# Load job params
 $list=import-csv ($path + 'Service_Mailing_List.csv')
 
-# Load message body
-$body=get-content ($path +'Email.Msg.Body\Service - Mail Body3.htm') | out-string
+# Load message body as HTML
+$mail_body=get-content ($path +'Email.Msg.Body\Service - Mail Body3.htm') | out-string
+
+# Set from / Subject
+$mail_from = 'David.Pinto@henryschein.ca'
+$mail_subject=$list[0].subject
+
+# build attachments list based on param first entry (max 3)
+$attachments=@()
+if($list[0].attach1 ) {
+    $attachments += $list[0].attach1
+}
+
+if($list[0].attach2) {
+    $attachments += $list[0].attach2
+}
+
+if($list[0].attach3) {
+    $attachments += $list[0].attach3
+}
+
+# convert attachement array to named list           
+$mail_param = @{}
+$mail_param['Attachments'] = $attachments
+
 
 # performace log start
 $startTime = Get-date
 $startLog = 'Service-' +$startTime
 
-# mail for each user
+# build mail list 
+$mail_to=@()
 foreach ($i in $list)
 {	
-    # build up attachments array (max 3)
-    $attachments=@()
+    $mail_to += $i.EMAIL -split ','
+}
 
-    if($i.attach1 ) {
-        $attachments += $i.attach1 
-    }
-          
-    if($i.attach2) {
-        $attachments += $i.attach2 
-    }
+#debug
+#Write-Host '$mail_smtp =' $mail_smtp '$mail_from =' $mail_from '$mail_subject=' $mail_subject '@mail_param =' @mail_param '$mail_to=' $mail_to
 
-    if($i.attach3) {
-        $attachments += $i.attach3 
-    }
-
-    # convert attachement array to named list           
-
-	$params = @{}
-	$params['Attachments'] = $attachments
-
-    # build mail send (can be list)
-    $emailarray  = $I.EMAIL -split ','
-
-
-    # Send email
-    try { 
-        Write-Host $emailarray 
-#        send-mailmessage -smtpserver $smtp -to $emailarray -from "David.Pinto@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
-    } 
-    catch {
-        echo "sending message failed"
-    }
-
-} # for
-
-# testing
-#$mailto = 'trevor.crowley@henryschein.ca'
- $mailto = 'trevor.crowley@henryschein.ca', 'jennifer.li@henryschein.ca'
-
-send-mailmessage -smtpserver $smtp -to $mailto -from "David.Pinto@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
-
+# Send email
+try { 
+    send-mailmessage -smtpserver $mail_smtp -to $mail_to -from $mail_from -subject $mail_subject -body $mail_body -bodyashtml @mail_param
+} 
+catch {
+    # set fail code & message here 
+}
  
-   
-
-
-
+# todo:  log status, performance   
