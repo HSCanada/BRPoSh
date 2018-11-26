@@ -9,98 +9,131 @@
 # log status, performance   
 # Set email server 
 
+#power shell parameter
+
+param([string]$job_code,[string]$job_run_mode)  
+
+# ***TC - make the script fail if no parameters, and SHOW the params 
+# Assume G type
+
+#get/set job variables
+#$job_code="SRV_PRO"  
+# set job run mode
+#$job_run_mode="G"
+#PS S:\BR\zDev\BR_Scripts\BRPoSh\BR_Mailer\SRV_PRO> Copy-Item
+#cmdlet Copy-Item at command pipeline position 1
+#Supply values for the following parameters:
+#Path[0]: 
+
+
 # get global parameters
 $global_smtp_server=$env:BR_Mailing_Server
 $global_debug_mode=$env:BRS_MODE
 
-
 # Set job parameters path
-$path=$env:br_mailing_path
-# $path=$start_path
-$path=$path + 'SRV_PRO\'
+$br_mailer_path=$env:br_mailing_path
 
-#get/set job variables
-$job_code="SRV_PRO"
-$job_run_mode="Group"
-#$job_group_count=2
-$job_mail_from = "Trevor.Crowley@henryschein.ca"
+# set start_path
+$job_path=$br_mailer_path +  $job_code +"\"
 
-#set up log file
-$job_log_file=$path + 'log\SRV_PRO_LOG.txt'
+# initialize group account
+$group_count = 0
 
+# ** TC Assume G for now - we do not have FSC mode
+if($job_run_mode="G")
+{
 
-# performace log start
-$startTime = Get-date
-$startLog = $job_code +" - Log - " + $startTime
-write-output  $startLog | Add-Content $job_log_file
+    #loop through all group folders
+    foreach($group in (Get-ChildItem $job_path)){
 
-#loop through all group folders
-foreach($_ in (Get-ChildItem $path)){
-
-if($_.PSIsContainer -AND $_.name -ne "Log"){
+        if($group.PSIsContainer -AND $group.name  -like 'G[01-99]*'){
 
 
-# Load job params
-$list=import-csv ($path+$_.name + '\Mail_List.csv')
+            # Load job params
+            $list=import-csv ($job_path+$group.name + '\Mail_List.csv')
 
-# Load message body as HTML
-$mail_body=get-content ($path +$_.name+'\Mail_Body.htm') | out-string
+            ## get job_group_count
+            #$job_group_account = $list[0].job_group_account
 
-# Set from / Subject
-#$mail_from = 'David.Pinto@henryschein.ca'
-#$job_mail_from = $list[0].job_mail_from   
+            #increament group accont by 1
+            #$group_count = $group_count + 1
 
-$mail_subject=$list[0].mail_subject
 
-# build attachments list based on param first entry (max 3)
-$attachments=@()
-if($list[0].mail_attachment_1 ) {
-    $attachments += $list[0].mail_attachment_1 
-}
-
-if($list[0].mail_attachment_2) {
-    $attachments += $list[0].mail_attachment_2
-}
-
-if($list[0].mail_attachment_3) {
-    $attachments += $list[0].mail_attachment_3
-}
-
-# convert attachement array to named list           
-$mail_attachments = @{}
-$mail_attachments['Attachments'] = $attachments
+            #set up log file
+            $job_log_file=$job_path + 'log\Mail_Log.txt'
 
 
 
-# build mail list 
-$mail_to=@()
-foreach ($i in $list)
-{	
-    $mail_to += $i.mail_to -split ','
-}
-
-#debug
-#Write-Host '$global_smtp_server =' $global_smtp_server '$job_mail_from =' $job_mail_from '$mail_subject=' $mail_subject '@mail_attachments =' @mail_attachments '$mail_to=' $mail_to
-
-
-# Send email
-try { 
-
-    send-mailmessage -smtpserver $global_smtp_server -to $mail_to -from "JenniferTest@henryschein.ca"  -subject $mail_subject -body $mail_body -bodyashtml @mail_attachments     
-    #write log message
-    $logmessage = "Completed - email sent " + "From " + $job_mail_from + " To " + $mail_to + " with attachment - " +$attachments+  " - "+  $((Get-Date).ToShortDateString())
-    write-output $logmessage | Add-Content $job_log_file
-    
-} 
-catch {
-    #write log message
-    $logmessage = "Failed - email sent " +  "From " + $job_mail_from + " To " + $mail_to + " with attachment - " +$attachments + " - " + $((Get-Date).ToShortDateString()) 
-    write-output  $logmessage | Add-Content $job_log_file
+            #beging log message
+            $job_startLog_message = $job_code +" - Log - " + (Get-Date).ToUniversalTime()
+            write-output  $job_startLog_message | Add-Content $job_log_file
     
 
-}
+            # Load message body as HTML
+            $mail_body=get-content ($job_path +$group.name+'\Mail_Body.htm') | out-string
+
+
+            $i=0
+
+            do{
+
+                # set job_mail_from
+                $job_mail_from = $list[$i].job_mail_from
+
+
+                # get message subject
+                $mail_subject=$list[$i].mail_subject
+
+                # build attachments list based on param first entry (max 3)
+                $attachments=@()
+                if($list[$i].mail_attachment_1 ) {
+                    $attachments += $list[$i].mail_attachment_1 
+                }
+
+                if($list[$i].mail_attachment_2) {
+                    $attachments += $list[$i].mail_attachment_2
+                }
+
+                if($list[$i].mail_attachment_3) {
+                    $attachments += $list[$i].mail_attachment_3
+                }
+
+                # convert attachement array to named list           
+                $mail_attachments = @{}
+                $mail_attachments['Attachments'] = $attachments
+
+
+
+                # build mail list 
+                $mail_to=@()
+                foreach ($eachline in $list[$i])
+                {	
+                    $mail_to += $eachline.mail_to -split ','
+                }
+
+                #debug
+                #Write-Host '$global_smtp_server =' $global_smtp_server '$job_mail_from =' $job_mail_from '$mail_subject=' $mail_subject '@mail_attachments =' @mail_attachments '$mail_to=' $mail_to
+
+
+                # Send email
+                try { 
+
+                    send-mailmessage -smtpserver $global_smtp_server -to $mail_to -from $job_mail_from -subject $mail_subject -body $mail_body -bodyashtml @mail_attachments     
+                    #write log message
+                    $job_success_message = "Completed - email sent " + "From " + $job_mail_from + " To " + $mail_to + " with attachment - " +$attachments+  " - "+  $((Get-Date).ToShortDateString())
+                    write-output $job_success_message | Add-Content $job_log_file
+    
+                } 
+                catch {
+                    #write log message
+                    $job_failure_message = "Failed - email sent " +  "From " + $job_mail_from + " To " + $mail_to + " with attachment - " +$attachments + " - " + $((Get-Date).ToShortDateString()) 
+                    write-output  $job_failure_message | Add-Content $job_log_file
+    
+
+                }
+                $i=$i +1
  
-# todo:  log status, performance   
-
-
-}}
+            }while ($i-le $list.count-1)
+        }
+    }
+}
