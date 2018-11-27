@@ -17,6 +17,7 @@ project.lock.json
 *.css
 *.docx
 *.db
+*.log
 
 # dotnet cli install/uninstall scripts
 dotnet-install.ps1
