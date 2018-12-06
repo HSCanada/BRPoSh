@@ -14,10 +14,12 @@ project.lock.json
 *.htm
 *.html
 *.xlsm
+*.xls
 *.css
 *.docx
 *.db
 *.log
+*.txt
 
 # dotnet cli install/uninstall scripts
 dotnet-install.ps1

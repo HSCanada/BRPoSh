@@ -32,7 +32,7 @@ $job_log_file=$job_path + 'log\Mail_Log.txt'
 
 
 #beging log message
-$job_startLog_message = $job_code +" - Log - " + (Get-Date).ToUniversalTime()
+$job_startLog_message = $job_code +" - Log - " + (Get-Date).ToLocalTime()
 write-output  $job_startLog_message | Add-Content $job_log_file
 
 
@@ -103,13 +103,13 @@ write-output  $job_startLog_message | Add-Content $job_log_file
 
                 send-mailmessage -smtpserver $global_smtp_server -to $mail_to -from $job_mail_from -subject $mail_subject -body $mail_body -bodyashtml @mail_attachments     
                 #write log message 
-                $job_success_message = "Completed - email sent from |" +$job_mail_from + "|To, " + $mail_to + "| with attachment - |"+$attachments+  "| - |"+  $((Get-Date).ToShortDateString())
+                $job_success_message = "Completed - email sent from |" +$job_mail_from + "|To|" + $mail_to + "| with attachment |"+$attachments+  "|"+  (Get-Date).ToLocalTime()
                 write-output $job_success_message | Add-Content $job_log_file
     
             } 
             catch {
                 #write log message
-                $job_failure_message = "Failed - email sent from |" +$job_mail_from + "|To, " + $mail_to + "| with attachment - |"+$attachments+  "| - |"+  $((Get-Date).ToShortDateString())
+                $job_failure_message = "Failed - email sent from |" +$job_mail_from + "|To|" + $mail_to + "| with attachment |"+$attachments+  "|"+  (Get-Date).ToLocalTime()  
                 write-output  $job_failure_message | Add-Content $job_log_file
     
 
