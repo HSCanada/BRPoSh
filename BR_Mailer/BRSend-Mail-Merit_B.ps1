@@ -16,7 +16,7 @@ Function LogWrite
 }
 
 # Path & file name for msg body
-$body=get-content ($path +"Merit_Run\Email.Msg.Body\Email_Body_FR.htm") | out-string
+$body=get-content ($path +"Merit_Run\Email.Msg.Body\Email_Body.htm") | out-string
 
 
 Clear-Host
@@ -25,7 +25,7 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
     -ErrorAction SilentlyContinue}
 
 # Path & file name for mailing list
-$list=import-csv ($path + "Merit_Run\"+"Merit_Mailing_ListB.csv")
+$list=import-csv ($path + "Merit_Run Bonus\"+"Merit_Mailing_List.csv")
 
 
 
