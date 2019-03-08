@@ -6,18 +6,18 @@
 )
 
 Import-Module -Force -Name .\InvokeSQL.psm1 
+
 <#
 # return new group for post processing
-$output = @{
-    BX_SHIPTO = $pipelineInput.bx_shipto
-    BX_GROUP_ID = $group_id
-    BX_SET_DATE = $pipelineInput.PROJECT_DATE_START
+$output = @{ BX_SHIPTO = 0; BX_GROUP_ID = 0; BX_SET_DATE = '2019-01-01'}
 }
 #>
 
+$pipelineInput.Length
 
-$cmd = "EXEC [nes].[bx_group_update_proc] @Shipto = {0}, @GroupId = {1}, @SetDate = {2} -f $pipeline.BX_SHIPTO, $pipeline.BX_GROUP_ID, pipeline.BX_SET_DATE 
+$cmd = "EXEC [nes].[bx_group_update_proc] @Shipto = {0}, @GroupId = {1}, @SetDate = {2}" -f $pipelineInput.BX_SHIPTO, $pipelineInput.BX_GROUP_ID, $pipelineInput.BX_SET_DATE 
 
+$cmd
 
-$DataRows = Invoke-MSSQL -Server $env:bx_server -database $env:bx_database -SQLCommand $cmd -ConvertFromDataRow:$false
+#$DataRows = Invoke-MSSQL -Server $env:bx_server -database $env:bx_database -SQLCommand $cmd -ConvertFromDataRow:$false
 
