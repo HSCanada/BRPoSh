@@ -1,7 +1,13 @@
 ﻿Import-Module -Force -Name .\InvokeSQL.psm1 
-#Import-Module -Force -Name .\InvokeSQL.psm1 -Verbose
 
-$DataRows = Invoke-MSSQL -Server win2019 -database master -SQLCommand "select * from sys.databases" -ConvertFromDataRow:$false
+
+$cmd = "SELECT * FROM nes.bx_group_load"
+
+$cmd = "EXEC [nes].[bx_group_update_proc] @Shipto = 0, @GroupId = 2, @SetDate = '2019-03-07'"
+
+
+$DataRows = Invoke-MSSQL -Server $env:bx_server -database $env:bx_database -SQLCommand $cmd -ConvertFromDataRow:$false
 
 write-output $DataRows 
+
 #$DataRows | Select-object name,database_id
