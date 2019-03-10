@@ -7,10 +7,11 @@ Param(
 )
  
         Begin {
+        Import-Module -Name .\TervisMicrosoft.PowerShell.Utility.psm1
 		$url_base = $env:bx_webhook_url
 		$url_create = $url_base + "sonet_group.create/"
 		$url_invite = $url_base + "sonet_group.user.invite/"
-		$url_setowner = $url_base + "sonet_group.usonet_group.setowner/"
+		$url_setowner = $url_base + "sonet_group.setowner/"
         }
         PROCESS {
 
@@ -38,9 +39,9 @@ Param(
 
 			$params_invite = @{
 			    GROUP_ID = $group_id
-			    USER_ID = $piplineInput.bx_user_id_branch
+			    USER_ID = $rec.bx_user_id_branch
 			}
-			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_setownder -Body $params_invite
+			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_setowner -Body $params_invite
 
 			# return new group for post processing
                         [PSCustomObject]@{
