@@ -45,7 +45,7 @@ Param(
 
 			# return new group for post processing
                         [PSCustomObject]@{
-			    SHIPTO = $rec.bx_shipto
+			    BX_SHIPTO = $rec.bx_shipto
 			    BX_GROUP_ID = $group_id
 			    BX_SET_DATE = $rec.PROJECT_DATE_START
                         }
