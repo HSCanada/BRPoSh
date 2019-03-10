@@ -16,7 +16,8 @@ Param(
 
                 ForEach ($rec in $pipelineInput) {
 			# create group
-			$res_create = Invoke-RestMethod -Method 'Post' -Uri $url_create -Body $rec 
+			$body = $rec | ConvertTo-HashTable
+			$res_create = Invoke-RestMethod -Method 'Post' -Uri $url_create -Body $body 
 			$group_id = $res_create.result
 
 			# assign users to group
@@ -25,21 +26,21 @@ Param(
 			    USER_ID = $rec.bx_user_id_fsc
 			    MESSAGE = "Invitation"
 			}
-			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_invite -Body $rec
+			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_invite -Body $params_invite
 
 
 			$params_invite = @{
 			    GROUP_ID = $group_id
-			    USER_ID = $pipelineInput.bx_user_id_ess
+			    USER_ID = $rec.bx_user_id_ess
 			    MESSAGE = "Invitation"
 			}
-			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_invite -Body $pipelineInput
+			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_invite -Body $params_invite
 
 			$params_invite = @{
 			    GROUP_ID = $group_id
 			    USER_ID = $piplineInput.bx_user_id_branch
 			}
-			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_setownder -Body $pipelineInput
+			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_setownder -Body $params_invite
 
 			# return new group for post processing
                         [PSCustomObject]@{
@@ -47,9 +48,7 @@ Param(
 			    BX_GROUP_ID = $group_id
 			    BX_SET_DATE = $rec.PROJECT_DATE_START
                         }
-
                }
         }
-
 
 
