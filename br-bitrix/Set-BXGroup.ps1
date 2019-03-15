@@ -1,23 +1,55 @@
-﻿Param(
+Param(
         [Parameter(
                 Mandatory=$True,
                 ValueFromPipeline=$True) ]
 
         $pipelineInput
 )
-
+ 
         Begin {
- 
-		Import-Module -Force -Name .\InvokeSQL.psm1 
+        Import-Module -Name .\TervisMicrosoft.PowerShell.Utility.psm1
+		$url_base = $env:bx_webhook_url
+		$url_create = $url_base + "sonet_group.create/"
+		$url_invite = $url_base + "sonet_group.user.invite/"
+		$url_setowner = $url_base + "sonet_group.setowner/"
+        }
+        PROCESS {
 
-	}
-	Process {
                 ForEach ($rec in $pipelineInput) {
- 
-			$cmd = "EXEC [nes].[bx_group_update_proc] @Shipto = {0}, @GroupId = {1}, @SetDate ='{2:yyyyMMdd}'" -f $rec.BX_SHIPTO, $rec.BX_GROUP_ID, $rec.BX_SET_DATE 
+			# create group
+			$body = $rec | ConvertTo-HashTable
+			$res_create = Invoke-RestMethod -Method 'Post' -Uri $url_create -Body $body 
+			$group_id = $res_create.result
 
-	#		$cmd
+			# assign users to group
+			$params_invite = @{
+			    GROUP_ID = $group_id
+			    USER_ID = $rec.bx_user_id_fsc
+			    MESSAGE = "Invitation"
+			}
+			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_invite -Body $params_invite
 
-			$DataRows = Invoke-MSSQL -Server $env:bx_server -database $env:bx_database -SQLCommand $cmd -ConvertFromDataRow:$false
-		}
-	}
+
+			$params_invite = @{
+			    GROUP_ID = $group_id
+			    USER_ID = $rec.bx_user_id_ess
+			    MESSAGE = "Invitation"
+			}
+			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_invite -Body $params_invite
+
+			$params_invite = @{
+			    GROUP_ID = $group_id
+			    USER_ID = $rec.bx_user_id_branch
+			}
+			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_setowner -Body $params_invite
+
+			# return new group for post processing
+                        [PSCustomObject]@{
+			    BX_SHIPTO = $rec.bx_shipto
+			    BX_GROUP_ID = $group_id
+			    BX_SET_DATE = $rec.PROJECT_DATE_START
+                        }
+               }
+        }
+
+
