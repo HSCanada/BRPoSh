@@ -17,10 +17,14 @@ Param(
 
                 ForEach ($rec in $pipelineInput) {
 			# create group
+            # update tags / desc?
 			$body = $rec | ConvertTo-HashTable
 			$res_create = Invoke-RestMethod -Method 'Post' -Uri $url_create -Body $body 
 			$group_id = $res_create.result
 
+# add folders here
+
+<#
 			# assign users to group
 			$params_invite = @{
 			    GROUP_ID = $group_id
@@ -42,12 +46,17 @@ Param(
 			    USER_ID = $rec.bx_user_id_branch
 			}
 			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_setowner -Body $params_invite
+#>
 
 			# return new group for post processing
+
+# fix names & add extra bits
+
                         [PSCustomObject]@{
 			    BX_SHIPTO = $rec.bx_shipto
 			    BX_GROUP_ID = $group_id
 			    BX_SET_DATE = $rec.PROJECT_DATE_START
+
                         }
                }
         }

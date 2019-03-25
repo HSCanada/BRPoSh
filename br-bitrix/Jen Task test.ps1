@@ -27,7 +27,7 @@ Param(
 			    USER_ID = $rec.bx_user_id_fsc
 			    MESSAGE = "Invitation"
 			}
-			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_invite -Body $params_invite
+			$res_invite = Invoke-RestMethod -Method 'Post' -Uri $url_invite  -Body $params_invite
 
 
 			$params_invite = @{
