@@ -35,8 +35,11 @@ Param(
 
 
 
-			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.getlist/")
+#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.getlist/")
+			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "sonet_group.get/")
 
+
+<#
 ID             : 41
 NAME           : MDM rollout
 CODE           : 
@@ -44,8 +47,10 @@ MODULE_ID      : disk
 ENTITY_TYPE    : group
 ENTITY_ID      : 15
 ROOT_OBJECT_ID : 129  <= this is the folder
+#>
 
-#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.folder.get/") -Body @{id = 129}
+#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.get/") -Body @{id = 41}
+#            $res.result
 
 
 # not useful
