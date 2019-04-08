@@ -32,11 +32,12 @@ Param(
 #            }
 
 
+$filter_parm = @{'%name'='chad'}
 
 
-
-#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.getlist/")
-			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "sonet_group.get/")
+			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.folder.getchildren/") -Body @{id=2}
+            $res.result
+#			(Invoke-RestMethod -Method 'Post' -Uri ($url_base + "sonet_group.get/")).result
 
 
 <#

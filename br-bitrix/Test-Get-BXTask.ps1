@@ -11,11 +11,7 @@ Param(
         Begin {
 		$url_base = $env:bx_webhook_url
 
-		$url_gettask = $url_base + "task.item.getdata/"
-		$url_addtask = $url_base + "task.item.add/"
 
-		$url_checklistadd = $url_base + "task.checklistitem.add/"
-		$url_gettasklist = $url_base + "task.item.list/"
         }
 
 
@@ -36,20 +32,19 @@ Param(
 			}
 
 			# add task data 
-			$params_addtask = "T[TITLE]=This is my title&T[DESCRIPTION]=This is my description&T[RESPONSIBLE_ID]=1&T[GROUP_ID]=383"
+#			$params_addtask = "T[TITLE]=This is my title&T[DESCRIPTION]=This is my description&T[RESPONSIBLE_ID]=1&T[GROUP_ID]=383"
 
 
+			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.getdescription/") -Body @{ID=3643}
+#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.list/") -Body "O[]&F[GROUP_ID]=367&P[]"
+            $res.result
+			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.checklistitem.getlist/") -Body @{TASKID=3643}
+            $res.result#
 
-            
+#			$rget = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body ("ID=2875&T[DEADLINE]={0}" -F (Get-Date))
+#			$rget = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.getdata/") -Body @{ID = 2993}
+#            $rget.result#			$rget = Invoke-RestMethod -Method 'Post' -Uri $url_gettask -Body $params_gettask 
 
-
-#			$res = Invoke-RestMethod -Method 'Post' -Uri $url_gettasklist -Body $params_gettasklist
-#			$res = Invoke-RestMethod -Method 'Post' -Uri $url_gettasklist -Body "[{GROUP_ID : 'desc'}]"
-#            $res.result
-#
-#			$res = Invoke-RestMethod -Method 'Post' -Uri $url_checklistadd -Body (convertto-json @{param=@(@{TASKID=1842},@{TITLE = 'checklist'})})
-			$rget = Invoke-RestMethod -Method 'Post' -Uri $url_gettask -Body @{ID = 140}
-#			$rget = Invoke-RestMethod -Method 'Post' -Uri $url_gettask -Body $params_gettask 
 #            $rget.result
 #   		$radd = Invoke-RestMethod -Method 'Post' -Uri $url_addtask -Body $params_addtask
 #    		$radd = Invoke-RestMethod -Method 'Post' -Uri $url_addtask -Body $params_addtask

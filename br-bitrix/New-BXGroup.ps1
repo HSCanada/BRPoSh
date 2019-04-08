@@ -4,7 +4,6 @@ Param(
 )
  
 Begin {
-#    Import-Module -Name .\TervisMicrosoft.PowerShell.Utility.psm1
     $url_base = $env:bx_webhook_url
     $body = $Null
 }
@@ -13,24 +12,24 @@ PROCESS {
     ForEach ($rec in $pipelineInput) {
 
         # store dates for post pipeline to sql save state
-        $pr_start = $rec.PROJECT_DATE_START
-        $pr_finish = $rec.PROJECT_DATE_FINISH
+        $pr_start = $rec.bx_sales_date
+        $pr_finish = $rec.bx_install_date
 
         $body = [ordered]@{
             NAME = $rec.NAME
             DESCRIPTION = $rec.DESCRIPTION
-            VISIBLE= $rec.VISIBLE
-            OPENED = $rec.OPENED
+            VISIBLE= 'N'
+            OPENED = 'N'
             KEYWORDS = $rec.KEYWORDS
-            INITIATE_PERMS = $rec.INITIATE_PERMS
-            PROJECT= $rec.PROJECT
-            PROJECT_DATE_START= $rec.PROJECT_DATE_START
-            PROJECT_DATE_FINISH= $rec.PROJECT_DATE_FINISH
+            INITIATE_PERMS = 'K'
+            PROJECT= 'Y'
+            PROJECT_DATE_START= $rec.bx_install_date.addyears(-1)
+            PROJECT_DATE_FINISH= $rec.bx_install_date.Addyears( 1)
         }
 
         # projects maintained for 2 years 
-        $body.PROJECT_DATE_START = $body.PROJECT_DATE_START.addyears(-1)
-        $body.PROJECT_DATE_FINISH = $body.PROJECT_DATE_FINISH.Addyears( 1)
+#        $body.PROJECT_DATE_START = $body.PROJECT_DATE_START.addyears(-1)
+#        $body.PROJECT_DATE_FINISH = $body.PROJECT_DATE_FINISH.Addyears( 1)
 
         # update tags / desc?            
         if ($rec.cadcam_sales -gt 0) { $body.KEYWORDS += ', cadcam' }
