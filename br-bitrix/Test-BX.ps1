@@ -26,40 +26,52 @@ Param(
 			    MESSAGE = "Invitation"
 			}
 
+
 #            id: 8,
 #            data: {
 #                NAME: 'New sub folder'
 #            }
 
 
-$filter_parm = @{'%name'='chad'}
+#$filter_parm = @{'%name'='chad'}
 
 
-			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.folder.getchildren/") -Body @{id=2}
-            $res.result
+#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.folder.getchildren/") -Body @{id=2}
+#            $res.result
 #			(Invoke-RestMethod -Method 'Post' -Uri ($url_base + "sonet_group.get/")).result
 
 
 <#
-ID             : 41
+
+ID             : 41 <- don't know ?
 NAME           : MDM rollout
 CODE           : 
 MODULE_ID      : disk
 ENTITY_TYPE    : group
-ENTITY_ID      : 15
+ENTITY_ID      : 15 <= work group Id (url path)
 ROOT_OBJECT_ID : 129  <= this is the folder
+
 #>
 
-#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.get/") -Body @{id = 41}
+            # 2
+#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.get/") -Body @{id = 699}
 #            $res.result
 
+            # 1
+# https://team-qa.hsa.ca/rest/1/2v21zmqf6rtcp2f2/disk.folder.addsubfolder?id=1901&data[NAME]=newfiler2
 
-# not useful
-#			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.get/") -Body @{id = 2}
+# https://team-qa.hsa.ca/rest/1/2v21zmqf6rtcp2f2/disk.storage.getlist?filter[%NAME]=MDM
+			$res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.folder.addsubfolder/") -Body ("id={0}&data[NAME]={1}" -F 1901, "Folder 6")
+            $res.result
 
 
-#			$res = Invoke-RestMethod -Method 'Post' -Uri $url_folderget 
-#			$res = Invoke-RestMethod -Method 'Post' -Uri $url_folderget -Body $params_invite
+			#3
+#            $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.getlist/")
+#            $res.result
+
+            #4 how to call #3 with filter parms (group id or name)"
+            $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.getlist/") -Body ("filter[%NAME]={0}" -F "Review")        
+            $res.result
 
 
         }

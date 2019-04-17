@@ -19,7 +19,7 @@ PROCESS {
             NAME = $rec.NAME
             DESCRIPTION = $rec.DESCRIPTION
             VISIBLE= 'N'
-            OPENED = 'N'
+            OPENED = 'Y'
             KEYWORDS = $rec.KEYWORDS
             INITIATE_PERMS = 'K'
             PROJECT= 'Y'
@@ -27,16 +27,13 @@ PROCESS {
             PROJECT_DATE_FINISH= $rec.bx_install_date.Addyears( 1)
         }
 
-        # projects maintained for 2 years 
-#        $body.PROJECT_DATE_START = $body.PROJECT_DATE_START.addyears(-1)
-#        $body.PROJECT_DATE_FINISH = $body.PROJECT_DATE_FINISH.Addyears( 1)
-
         # update tags / desc?            
-        if ($rec.cadcam_sales -gt 0) { $body.KEYWORDS += ', cadcam' }
-        if ($rec.hitech_sales -gt 0) { $body.KEYWORDS += ', hitech' }
-        if ($rec.large_equip_sales -gt 0) { $body.KEYWORDS += ', large_equip' }
-        if ($rec.dentrix_sales -gt 0) { $body.KEYWORDS += ', dentrix' }
-        if ($rec.design_sales -gt 0) { $body.KEYWORDS += ', design' }
+        $body.KEYWORDS += (', ' + $rec.bx_market_class)
+        if ($rec.bx_cadcam_sales -gt 0) { $body.KEYWORDS += ', cadcam' }
+        if ($rec.bx_hitech_sales -gt 0) { $body.KEYWORDS += ', hitech' }
+        if ($rec.bx_large_equip_sales -gt 0) { $body.KEYWORDS += ', large_equip' }
+        if ($rec.bx_dentrix_sales -gt 0) { $body.KEYWORDS += ', dentrix' }
+        if ($rec.bx_design_sales -gt 0) { $body.KEYWORDS += ', design' }
         # test
         #$body
             
