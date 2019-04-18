@@ -34,35 +34,32 @@ PROCESS {
         if ($rec.bx_large_equip_sales -gt 0) { $body.KEYWORDS += ', large_equip' }
         if ($rec.bx_dentrix_sales -gt 0) { $body.KEYWORDS += ', dentrix' }
         if ($rec.bx_design_sales -gt 0) { $body.KEYWORDS += ', design' }
-        # test
-        #$body
             
         $res_create = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "sonet_group.create/") -Body $body 
         $group_id = $res_create.result
 
-        <#
-        # add folders here
+       
+        # get folders id for folder creation
+        $folder_param = ("filter[ENTITY_ID]={0}&filter[ENTITY_TYPE]={1}" -F $group_id,"group") 
+        $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.getlist/") -Body $folder_param         
+        $folder_id = $res.result.ROOT_OBJECT_ID
 
-        $res_folder = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.storage.get/") -Body @{id = $group_id}
-        $folder_id = $res_folder.result.ROOT_OBJECT_ID
+        $folders = @(
+            'A-design'
+            'B-coordination-contract'
+            'B-coordination-financing'
+            'B-coordination-order-details'
+            'C-install'
+            'C-install-photos'
+            'D-service'
+        )
 
-        $res_folder = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.folder.addsubfolder/") -Body @{id = $folder_id; data = @{NAME = 'testdir'} }
+        foreach ($folder in $folders) {
+		    $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.folder.addsubfolder/") -Body ("id={0}&data[NAME]={1}" -F $folder_id, $folder)
+        }
 
-        A-design
-        B-coordination-contract
-        B-coordination-financing
-        B-coordination-order-details
-        C-pre-install-checklists
-        D-post-install-follow-up
         
-        # assign users to group
-        $params_invite = @{ GROUP_ID = $group_id; USER_ID = $rec.bx_user_id_fsc; MESSAGE = "Invitation" }
-        $res_invite = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "sonet_group.user.invite/") -Body $params_invite
-        #>
-
         # return new group for post processing
-
-
         [PSCustomObject]@{
             BX_SHIPTO = $rec.bx_shipto
             BX_GROUP_ID = $group_id

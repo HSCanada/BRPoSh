@@ -30,12 +30,16 @@ PROCESS {
 
         $parent_id = $parent_hash[$rec.TAGS]
 
-        #encode rest delimiter
-        $rec.DESCRIPTION.GetEncoding
-
         # URL rest encoding work-around hack
-        $descr_scrub = $rec.DESCRIPTION.Replace('&', '%26a')
-#        $descr_scrub = [System.Text.Encoding]::UTF8.GetBytes($rec.DESCRIPTION)
+        $descr_scrub = $rec.DESCRIPTION
+        $descr_scrub = $descr_scrub.Replace('&', '%26amp;')
+
+        #replace references to template path with new group path.  
+        #Assume the production group ID 55 does not change
+        $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
+        # prod
+        #$descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0]' -f $rec.GROUP_ID) )
+        
         
 		$params_addtask = "T[TITLE]={0}&T[DESCRIPTION]={1}&T[DEADLINE]={2}&T[START_DATE_PLAN]={3}&T[END_DATE_PLAN]={4}&T[PRIORITY]={5}&T[TAGS]={6}&T[PARENT_ID]={7}&T[RESPONSIBLE_ID]={8}&T[GROUP_ID]={9}" -f $rec.TITLE, $descr_scrub, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $rec.RESPONSIBLE_ID, $rec.GROUP_ID
         
@@ -50,7 +54,8 @@ PROCESS {
         if($rec.bx_checklist.length -gt 0) {
             $check_array = $rec.bx_checklist.split('|')
             ForEach($check in $check_array) {
-                $check_param = "ID={0}&F[TITLE]={1}" -f $task_id_new, $check
+                $check_scrub = $check.Replace('&', '%26amp;')
+                $check_param = "ID={0}&F[TITLE]={1}" -f $task_id_new, $check_scrub
                 $res_check = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.checklistitem.add/") -Body $check_param
             }
         }
@@ -72,8 +77,9 @@ PROCESS {
         [PSCustomObject]@{
             # temp
             title = $rec.TITLE
-#            fixed = $rec.DESCRIPTION.contains('&')
-#            desc_org = $rec.DESCRIPTION
+            fixed = $rec.DESCRIPTION.contains('&')
+            desc_org = $rec.DESCRIPTION
+            desc_new = $descr_scrub
             BX_DESC_LEN = $descr_scrub.length
             BX_CHECK_COUNT = $check_array.count
 
