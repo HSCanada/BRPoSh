@@ -30,9 +30,10 @@ PROCESS {
         # done
         [PSCustomObject]@{
             BX_TASK_ID = $rec.bx_task_id
-            BX_TITLE = $res_descr.TITLE
-            BX_DESCRIPTION = $res_descr.DESCRIPTION
-            BX_CHECKLIST = $check_line
+            BX_TITLE = $rec.bx_title
+            BX_TITLE_NEW = $res_descr.TITLE
+            BX_DESCRIPTION_NEW = $res_descr.DESCRIPTION
+            BX_CHECKLIST_NEW = $check_line
         }
    }
 }
