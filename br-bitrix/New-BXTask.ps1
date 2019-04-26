@@ -32,25 +32,23 @@ PROCESS {
 
         # URL rest encoding work-around hack
         $descr_scrub = $rec.DESCRIPTION
-        if($descr_scrub.lenght -gt 0) {
+        if($descr_scrub.length -gt 0) {
             # escape REST delimiter 
             $descr_scrub = $descr_scrub.Replace('&', '%26')
 
             #replace references to template path with new group path.  
             #Assume the production group ID 55 does not change
-            #$descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
+            $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
             # prod
-            $descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0]' -f $rec.GROUP_ID) )
+#            $descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0]' -f $rec.GROUP_ID) )
         }
         
-		$params_addtask = "T[TITLE]={0}&T[DEADLINE]={1}&T[START_DATE_PLAN]={2}&T[END_DATE_PLAN]={3}&T[PRIORITY]={4}&T[TAGS]={5}&T[PARENT_ID]={6}&T[RESPONSIBLE_ID]={7}&T[GROUP_ID]={8}" -f $rec.TITLE, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $rec.RESPONSIBLE_ID, $rec.GROUP_ID
-
+		$params_addtask = "T[TITLE]={0}&T[DEADLINE]={1}&T[START_DATE_PLAN]={2}&T[END_DATE_PLAN]={3}&T[PRIORITY]={4}&T[TAGS]={5}&T[ALLOW_CHANGE_DEADLINE]=Y&T[PARENT_ID]={6}&T[RESPONSIBLE_ID]={7}&T[GROUP_ID]={8}" -f $rec.TITLE, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $rec.RESPONSIBLE_ID, $rec.GROUP_ID
         $res_create = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.add/") -Body $params_addtask 
         $task_id_new = $res_create.result
-
                 
-        $params_updatetask = "TASKID={0}&T[DESCRIPTION]='{1}'" -f $task_id_new, $descr_scrub
-        $res_create = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body $params_updatetask 
+        $params_updatetask = "TASKID={0}&T[DESCRIPTION]={1}" -f $task_id_new, $descr_scrub
+        $res_update = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body $params_updatetask 
 
         # update new lookups to map org task relationships to new
         if( -not ($task_id_hash.ContainsKey($rec.bx_task_id_org)) ) {$task_id_hash.Add($rec.bx_task_id_org, $task_id_new)}

@@ -1,4 +1,5 @@
-﻿Import-Module -Force -Name .\InvokeSQL.psm1 
+﻿
+Import-Module -Force -Name .\InvokeSQL.psm1 
 
 $cmd = "SELECT * FROM nes.bx_group_load"
 
