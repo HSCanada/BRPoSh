@@ -38,9 +38,9 @@ PROCESS {
 
             #replace references to template path with new group path.  
             #Assume the production group ID 55 does not change
-            $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
+#            $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
             # prod
-#            $descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0]' -f $rec.GROUP_ID) )
+            $descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0}' -f $rec.GROUP_ID) )
         }
         
 		$params_addtask = "T[TITLE]={0}&T[DEADLINE]={1}&T[START_DATE_PLAN]={2}&T[END_DATE_PLAN]={3}&T[PRIORITY]={4}&T[TAGS]={5}&T[ALLOW_CHANGE_DEADLINE]=Y&T[PARENT_ID]={6}&T[RESPONSIBLE_ID]={7}&T[GROUP_ID]={8}" -f $rec.TITLE, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $rec.RESPONSIBLE_ID, $rec.GROUP_ID
