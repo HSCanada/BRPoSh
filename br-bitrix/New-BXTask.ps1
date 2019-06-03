@@ -7,7 +7,9 @@ Param(
 Begin {
     $url_base = $env:bx_webhook_url
     $group_id_current = -1
-
+    $design_parent_id = 1836
+    $design_newreno_list = (1750,1751,1752,1836)
+    $design_xray_list = (1753,1754)
 }
 
 PROCESS {
@@ -75,6 +77,18 @@ PROCESS {
         if($rec.bx_task_id_depends_on_org -gt 0) {   
             $res_link = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.dependence.add/") -Body $link_param 
             $id_new = $res_link.result
+        }
+
+        # close unneeded design tasks (reversible)
+        if($rec.bx_task_id_parent_org -eq $design_parent_id) {   
+            # close xray
+            if($rec.bx_xray_qty -eq 0 -and $design_xray_list.Contains($rec.bx_task_id_org) ) {   
+                Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.complete/") -Body @{TASKID=$task_id_new} 
+            }
+            # close newreno
+            if($rec.bx_newreno_qty -eq 0 -and $design_newreno_list.Contains($rec.bx_task_id_org) ) {   
+                Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.complete/") -Body @{TASKID=$task_id_new} 
+            }
         }
 
         # done

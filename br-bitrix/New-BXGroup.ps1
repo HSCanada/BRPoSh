@@ -33,7 +33,8 @@ PROCESS {
         if ($rec.bx_hitech_sales -gt 0) { $body.KEYWORDS += ', hitech' }
         if ($rec.bx_large_equip_sales -gt 0) { $body.KEYWORDS += ', large_equip' }
         if ($rec.bx_dentrix_sales -gt 0) { $body.KEYWORDS += ', dentrix' }
-        if ($rec.bx_design_sales -gt 0) { $body.KEYWORDS += ', design' }
+        if ($rec.bx_newreno_qty -gt 0) { $body.KEYWORDS += ', newreno' }
+        if ($rec.bx_xray_qty -gt 0) { $body.KEYWORDS += ', xray' }
             
         $res_create = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "sonet_group.create/") -Body $body 
         $group_id = $res_create.result
