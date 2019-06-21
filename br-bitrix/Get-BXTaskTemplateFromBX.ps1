@@ -5,7 +5,19 @@ Param(
  
 
 Begin {
-    $url_base = $env:bx_webhook_url
+
+    if($env:BRS_MODE -eq "PROD") {
+        $bx_server = $env:BRS_SQLSERVER
+        $bx_database = $env:bx_database
+        $bx_webhook_url = $env:bx_webhook_url
+    } 
+    else {
+        $bx_server = $env:BRS_SQLSERVER
+        $bx_database = $env:bx_database_DEV
+        $bx_webhook_url = $env:bx_webhook_url_DEV
+    }
+
+    $url_base = $bx_webhook_url
 #    $task_id = 2208
 }
 
@@ -19,11 +31,9 @@ PROCESS {
         $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.getdata/") -Body @{ID = $task_id}
         $res_descr = $res.result
 
-        # test 
-        $params_updatetask = "TASKID={0}&T[DESCRIPTION]={1}" -f $task_id, $res_descr.TITLE
-        $res_update = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body ([System.Text.Encoding]::UTF8.GetBytes($params_updatetask)) 
-#        $res_update = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body $params_updatetask 
-#        -Body ([System.Text.Encoding]::UTF8.GetBytes($params_updatetask))
+# test 
+#        $params_updatetask = "TASKID={0}&T[DESCRIPTION]={1}" -f $task_id, $res_descr.TITLE
+#        $res_update = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body ([System.Text.Encoding]::UTF8.GetBytes($params_updatetask)) 
 
         # get checklist array
         $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.checklistitem.getlist/") -Body @{ID = $task_id}

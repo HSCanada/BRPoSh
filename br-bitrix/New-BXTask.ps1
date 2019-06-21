@@ -5,8 +5,22 @@ Param(
  
 
 Begin {
-    $url_base = $env:bx_webhook_url
+
+    if($env:BRS_MODE -eq "PROD") {
+        $bx_server = $env:BRS_SQLSERVER
+        $bx_database = $env:bx_database
+        $bx_webhook_url = $env:bx_webhook_url
+    } 
+    else {
+        $bx_server = $env:BRS_SQLSERVER
+        $bx_database = $env:bx_database_DEV
+        $bx_webhook_url = $env:bx_webhook_url_DEV
+    }
+
+    $url_base = $bx_webhook_url
     $group_id_current = -1
+
+    # hardcoded IDs to allow conditional autoclose invalid options
     $design_parent_id = 1836
     $design_newreno_list = (1750,1751,1752,1836)
     $design_xray_list = (1753,1754)
@@ -40,10 +54,14 @@ PROCESS {
 
             #replace references to template path with new group path.  
             #Assume the production group ID 55 does not change
-            # QA
-            $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
-            # prod
-#            $descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0}' -f $rec.GROUP_ID) )
+            if($env:BRS_MODE -eq "PROD") {
+                # prod
+                $descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0}' -f $rec.GROUP_ID) )
+            }
+            else {
+                # QA
+                $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
+            }
         }
         
 		$params_addtask = "T[TITLE]={0}&T[DEADLINE]={1}&T[START_DATE_PLAN]={2}&T[END_DATE_PLAN]={3}&T[PRIORITY]={4}&T[TAGS]={5}&T[ALLOW_CHANGE_DEADLINE]=Y&T[PARENT_ID]={6}&T[RESPONSIBLE_ID]={7}&T[GROUP_ID]={8}" -f $rec.TITLE, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $rec.RESPONSIBLE_ID, $rec.GROUP_ID
