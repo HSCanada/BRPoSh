@@ -12,11 +12,18 @@ Begin {
 PROCESS {
             
     ForEach ($rec in $pipelineInput) {
-        $task_id = $rec.bx_task_id_map
+        $task_id = $rec
+#        $task_id = $rec.bx_task_id_map
             
         # get descr
         $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.getdata/") -Body @{ID = $task_id}
         $res_descr = $res.result
+
+        # test 
+        $params_updatetask = "TASKID={0}&T[DESCRIPTION]={1}" -f $task_id, $res_descr.TITLE
+        $res_update = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body ([System.Text.Encoding]::UTF8.GetBytes($params_updatetask)) 
+#        $res_update = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body $params_updatetask 
+#        -Body ([System.Text.Encoding]::UTF8.GetBytes($params_updatetask))
 
         # get checklist array
         $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.checklistitem.getlist/") -Body @{ID = $task_id}

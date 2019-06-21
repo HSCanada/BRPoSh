@@ -40,17 +40,18 @@ PROCESS {
 
             #replace references to template path with new group path.  
             #Assume the production group ID 55 does not change
-#            $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
+            # QA
+            $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
             # prod
-            $descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0}' -f $rec.GROUP_ID) )
+#            $descr_scrub = $descr_scrub.Replace('workgroups/group/55', ('workgroups/group/{0}' -f $rec.GROUP_ID) )
         }
         
 		$params_addtask = "T[TITLE]={0}&T[DEADLINE]={1}&T[START_DATE_PLAN]={2}&T[END_DATE_PLAN]={3}&T[PRIORITY]={4}&T[TAGS]={5}&T[ALLOW_CHANGE_DEADLINE]=Y&T[PARENT_ID]={6}&T[RESPONSIBLE_ID]={7}&T[GROUP_ID]={8}" -f $rec.TITLE, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $rec.RESPONSIBLE_ID, $rec.GROUP_ID
-        $res_create = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.add/") -Body $params_addtask 
+        $res_create = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.add/") -Body ([System.Text.Encoding]::UTF8.GetBytes($params_addtask)) 
         $task_id_new = $res_create.result
                 
         $params_updatetask = "TASKID={0}&T[DESCRIPTION]={1}" -f $task_id_new, $descr_scrub
-        $res_update = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body $params_updatetask 
+        $res_update = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.update/") -Body ([System.Text.Encoding]::UTF8.GetBytes($params_updatetask)) 
 
         # update new lookups to map org task relationships to new
         if( -not ($task_id_hash.ContainsKey($rec.bx_task_id_org)) ) {$task_id_hash.Add($rec.bx_task_id_org, $task_id_new)}
@@ -62,7 +63,7 @@ PROCESS {
             ForEach($check in $check_array) {
                 $check_scrub = $check.Replace('&', '%26')
                 $check_param = "ID={0}&F[TITLE]={1}" -f $task_id_new, $check_scrub
-                $res_check = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.checklistitem.add/") -Body $check_param
+                $res_check = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.checklistitem.add/") -Body ([System.Text.Encoding]::UTF8.GetBytes($check_param))                get
             }
         }
 
@@ -83,11 +84,11 @@ PROCESS {
         if($rec.bx_task_id_parent_org -eq $design_parent_id) {   
             # close xray
             if($rec.bx_xray_qty -eq 0 -and $design_xray_list.Contains($rec.bx_task_id_org) ) {   
-                Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.complete/") -Body @{TASKID=$task_id_new} 
+                $res_close = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.complete/") -Body @{TASKID=$task_id_new} 
             }
             # close newreno
             if($rec.bx_newreno_qty -eq 0 -and $design_newreno_list.Contains($rec.bx_task_id_org) ) {   
-                Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.complete/") -Body @{TASKID=$task_id_new} 
+                $res_close = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.complete/") -Body @{TASKID=$task_id_new} 
             }
         }
 
