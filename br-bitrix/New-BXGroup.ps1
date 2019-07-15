@@ -44,7 +44,7 @@ PROCESS {
         if ($rec.bx_cadcam_sales -gt 0) { $body.KEYWORDS += ', cadcam' }
         if ($rec.bx_hitech_sales -gt 0) { $body.KEYWORDS += ', hitech' }
         if ($rec.bx_large_equip_sales -gt 0) { $body.KEYWORDS += ', large_equip' }
-        if ($rec.bx_dentrix_sales -gt 0) { $body.KEYWORDS += ', dentrix' }
+        if ($rec.bx_dentrix_sales -gt 0) { $body.KEYWORDS += ', digital' }
         if ($rec.bx_newreno_qty -gt 0) { $body.KEYWORDS += ', newreno' }
         if ($rec.bx_xray_qty -gt 0) { $body.KEYWORDS += ', xray' }
             
