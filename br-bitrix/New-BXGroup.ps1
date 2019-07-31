@@ -71,7 +71,10 @@ PROCESS {
 		    $res = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "disk.folder.addsubfolder/") -Body ("id={0}&data[NAME]={1}" -F $folder_id, $folder)
         }
 
-        
+        # add welcome msg
+        $event_param = "POST_TITLE={0}&POST_MESSAGE={1}&DEST[]=SG{2}" -F 'install.info', ($body.DESCRIPTION + '; ' + $body.KEYWORDS), $group_id
+        $res_event = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "log.blogpost.add/") -Body $event_param
+       
         # return new group for post processing
         [PSCustomObject]@{
             BX_SHIPTO = $rec.bx_shipto

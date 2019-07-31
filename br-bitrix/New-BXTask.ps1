@@ -21,6 +21,8 @@ Begin {
     $group_id_current = -1
 
     # hardcoded IDs to allow conditional autoclose invalid options
+    $service_parent_id = 1840
+    $install_parent_id = 1839
     $design_parent_id = 1836
     $design_newreno_list = (1750,1751,1752,1836)
     $design_xray_list = (1753,1754)
@@ -63,8 +65,16 @@ PROCESS {
                 $descr_scrub = $descr_scrub.Replace('team.hsa.ca/workgroups/group/55', ('team-qa.hsa.ca/workgroups/group/{0}' -f $rec.GROUP_ID) )
             }
         }
+
+        # custom responsible ID logic for install -- use second user if availible and primary user $ < 10k
+        $responsible_id = $rec.RESPONSIBLE_ID
+        if( $rec.RESPONSIBLE2_ID -gt 0) {
+            if($rec.bx_task_id_parent_org -eq $install_parent_id -and $rec.bx_large_equip_sales -lt 10000 ) {   
+                $responsible_id = $rec.RESPONSIBLE2_ID
+            }
+        }
         
-		$params_addtask = "T[TITLE]={0}&T[DEADLINE]={1}&T[START_DATE_PLAN]={2}&T[END_DATE_PLAN]={3}&T[PRIORITY]={4}&T[TAGS]={5}&T[ALLOW_CHANGE_DEADLINE]=Y&T[PARENT_ID]={6}&T[RESPONSIBLE_ID]={7}&T[GROUP_ID]={8}" -f $rec.TITLE, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $rec.RESPONSIBLE_ID, $rec.GROUP_ID
+		$params_addtask = "T[TITLE]={0}&T[DEADLINE]={1}&T[START_DATE_PLAN]={2}&T[END_DATE_PLAN]={3}&T[PRIORITY]={4}&T[TAGS]={5}&T[ALLOW_CHANGE_DEADLINE]=Y&T[PARENT_ID]={6}&T[RESPONSIBLE_ID]={7}&T[GROUP_ID]={8}" -f $rec.TITLE, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $responsible_id, $rec.GROUP_ID
         #
         #$params_addtask
         #([System.Text.Encoding]::UTF8.GetBytes($params_addtask)) 
@@ -105,7 +115,7 @@ PROCESS {
             $id_new = $res_link.result
         }
 
-        # close unneeded design tasks (reversible)
+        # close unneeded tasks (reversible) - design
         if($rec.bx_task_id_parent_org -eq $design_parent_id) {   
             # close xray
             if($rec.bx_xray_qty -eq 0 -and $design_xray_list.Contains($rec.bx_task_id_org) ) {   
@@ -113,6 +123,13 @@ PROCESS {
             }
             # close newreno
             if($rec.bx_newreno_qty -eq 0 -and $design_newreno_list.Contains($rec.bx_task_id_org) ) {   
+                $res_close = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.complete/") -Body @{TASKID=$task_id_new} 
+            }
+        }
+        # close unneeded tasks (reversible) - service
+        if($rec.bx_task_id_parent_org -eq $service_parent_id) {   
+            # close all service
+            if($rec.bx_xray_qty -eq 0 -and $rec.bx_newreno_qty -eq 0 ) {   
                 $res_close = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.complete/") -Body @{TASKID=$task_id_new} 
             }
         }
