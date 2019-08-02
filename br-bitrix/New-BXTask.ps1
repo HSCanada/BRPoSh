@@ -66,7 +66,7 @@ PROCESS {
             }
         }
 
-        # custom responsible ID logic for install -- use second user if availible and primary user $ < 10k
+        # custom responsible ID logic for install -- use second user if availible and primary user $ < 10k Large EQ 
         $responsible_id = $rec.RESPONSIBLE_ID
         if( $rec.RESPONSIBLE2_ID -gt 0) {
             if($rec.bx_task_id_parent_org -eq $install_parent_id -and $rec.bx_large_equip_sales -lt 10000 ) {   
