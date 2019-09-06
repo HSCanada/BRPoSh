@@ -27,6 +27,7 @@ PROCESS {
             
         # assign users to group
         $params_invite = @{ GROUP_ID = $rec.GROUP_ID; USER_ID = $rec.USER_ID; MESSAGE = "Invitation" }
+#        $params_invite
         $res_invite = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "sonet_group.user.invite/") -Body $params_invite
 
         # reset hash at start of new group
