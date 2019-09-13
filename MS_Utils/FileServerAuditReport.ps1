@@ -2,7 +2,8 @@
 #Variables to modify
 #########################################################################################################################################
 # List of servers to check audit events
-$server = "SRVJ-FS01","SVMEN01"
+$server = $env:file_server
+#$server = "SRVJ-FS01","SVMEN01"
 # List of file extensions to ignore
 $ignoredExtensions = "tmp","rgt","mta","tlg","nd","ps","log","ldb","crdownload","DS_Store","cdf-ms","ini"
 # List of users to ignore. If you do not want to ignore users, leave it empty.
@@ -19,7 +20,7 @@ $htmlReportPath = "$PSScriptRoot\" + "$timestamp" + "_AuditReport.html" # defaul
 $csvReportPath = "$PSScriptRoot\" + "$timestamp" + "_AuditReport.csv" # default: csv report path in script path.
 $transcriptPath = "$PSScriptRoot\" + "$timestamp" + "_AuditReport.log" # default: PowerShell transcript in script path.
 # Mail settings
-[string]$SMTPServer="mail.contoso.com" # If "None", no mail is sending. Example: [string]$SMTPServer="mail.contoso.com"
+[string]$SMTPServer="None" # If "None", no mail is sending. Example: [string]$SMTPServer="mail.contoso.com"
 [string[]]$Recipient="jgranados@contoso.com" # List of recipients. Example: [string[]]$Recipient="jdoe@contoso.com","fsmith@contoso.com"
 [string]$Sender = "audit-reports@contoso.com" # Sender. Example: [string]$Sender="reports@contoso.com"
 [string]$Username="audit-reports@contoso.com" # User name to authenticate with mail server. If "None", no auth is performed. Example: [string]$Username="jdoe@gmail.com"
