@@ -11,9 +11,9 @@ $ignoredExtensions = "tmp","rgt","mta","tlg","nd","ps","log","ldb","crdownload",
 $skippedUsers = ""
 # List of files to audit if you are interested only in a few files. If empty, all files (except those with ignored extensions) will be included in report.
 # For example: $filesToAudit = "MontlyReport.xlsx","Internal Database.mdb" -> Only this two files will be included in report.
-$filesToAudit = ""
+$filesToAudit = "CSR Discount Pricing Ladder tool - Excel.xlsm"
 # Number of hours back in time to check audit events
-$hoursBackToCheck = "24"
+$hoursBackToCheck = "48"
 # Reports path
 $timestamp = Get-Date -format yyyy-MM-dd_HH-mm-ss # Timestamp to add to report name
 $htmlReportPath = "$PSScriptRoot\" + "$timestamp" + "_AuditReport.html" # default: html report path in script path.

@@ -73,12 +73,15 @@ PROCESS {
                 $responsible_id = $rec.RESPONSIBLE2_ID
             }
         }
+        # test fixed user
+        #$responsible_id = 6
         
 		$params_addtask = "T[TITLE]={0}&T[DEADLINE]={1}&T[START_DATE_PLAN]={2}&T[END_DATE_PLAN]={3}&T[PRIORITY]={4}&T[TAGS]={5}&T[ALLOW_CHANGE_DEADLINE]=Y&T[PARENT_ID]={6}&T[RESPONSIBLE_ID]={7}&T[GROUP_ID]={8}" -f $rec.TITLE, $deadline, $rec.START_DATE_PLAN, $rec.END_DATE_PLAN, $rec.PRIORITY, $rec.TAGS, $parent_id, $responsible_id, $rec.GROUP_ID
         #
         #$params_addtask
         #([System.Text.Encoding]::UTF8.GetBytes($params_addtask)) 
         #
+#        $res_create = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "tasks.task.add/") -Body ([System.Text.Encoding]::UTF8.GetBytes($params_addtask)) 
         $res_create = Invoke-RestMethod -Method 'Post' -Uri ($url_base + "task.item.add/") -Body ([System.Text.Encoding]::UTF8.GetBytes($params_addtask)) 
         $task_id_new = $res_create.result
                 
