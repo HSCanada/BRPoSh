@@ -1,8 +1,7 @@
-﻿#Daily Sales Mailer
-
+﻿
 #before using this mailer, two the following system environment variables need to be set up: 
-	#BR_Mailing_Path: 	S:\BR\zDev\BR_Scripts\BRPoSh\BR_Mailer\
-	#BR_Mailing_Server: 	Usnymeht3.us.hsi.local 
+	#BR_Mailing_Path: 	S:\BR\ZDEV_BR_Scripts\BRPoSh\BR_Mailer\
+	#BR_Mailing_Server: 	usnymexhub1.us.hsi.local
 
 #on moving to window 10, need to set new script execution policy using ADMIN on Windows Powershell ISE: Set-ExecutionPolicy unrestricted
 #need to register: BRC for event log ( regedit: local maching: HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\application\BRC)
