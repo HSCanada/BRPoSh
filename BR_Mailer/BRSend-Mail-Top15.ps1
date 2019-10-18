@@ -1,4 +1,6 @@
-﻿
+﻿#FSC Top15 mailer
+
+
 $smtp=$env:BR_Mailing_Server
 
 $path=$env:br_mailing_path  #(get-location) 
