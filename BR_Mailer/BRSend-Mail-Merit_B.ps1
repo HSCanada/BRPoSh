@@ -16,7 +16,7 @@ Function LogWrite
 }
 
 # Path & file name for msg body
-$body=get-content ($path +"Merit_Run\Email.Msg.Body\Email_Body.htm") | out-string
+$body=get-content ($path +"Merit_Run Bonus\Email.Msg.Body\Email_Body.htm") | out-string
 
 
 Clear-Host
