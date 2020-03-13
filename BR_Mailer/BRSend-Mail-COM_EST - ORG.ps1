@@ -93,7 +93,7 @@ foreach ($i in $list)
         try{
 
       
-		    echo $i.email
+		
 	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Commissions.Agent@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
          
@@ -103,7 +103,6 @@ foreach ($i in $list)
         catch
          {
              echo "sending message failed"
-             echo $i.email
              write-eventlog -logname Application -message ('EST Commission -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
 
         }
@@ -114,8 +113,6 @@ foreach ($i in $list)
     
         $emailarray  = $I.EMAIL -split ','
             try{
-                echo $i.email
-
                 send-mailmessage -smtpserver $smtp -to $emailarray  -from "Commissions.Agent@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
                 write-eventlog -logname Application -message ( 'EST Commission -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
@@ -123,8 +120,6 @@ foreach ($i in $list)
             }
             catch{
                     echo "sending message failed"
-
-                    echo $i.email
                    
                     write-eventlog -logname Application -message ('EST Commission -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
             }

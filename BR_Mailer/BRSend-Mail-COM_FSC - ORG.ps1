@@ -16,7 +16,7 @@ Function LogWrite
 }
 
 # Path & file name for msg body
-$body=get-content ($path +"J040_COM_EST\ETU_MSG_EST_Comm.htm") | out-string
+$body=get-content ($path +"J030_COM_FSC\ETU_MSG_FSC_Comm.htm") | out-string
 
 
 Clear-Host
@@ -25,7 +25,7 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
     -ErrorAction SilentlyContinue}
 
 # Path & file name for mailing list
-$list=import-csv ($path + "J040_COM_EST\"+"J040_Mailing_List.csv")
+$list=import-csv ($path + "J030_COM_FSC\"+"J030_Mailing_List.csv")
 
 
 
@@ -93,18 +93,17 @@ foreach ($i in $list)
         try{
 
       
-		    echo $i.email
+		
 	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Commissions.Agent@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
          
-            write-eventlog -logname Application -message ( 'EST Commission -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+            write-eventlog -logname Application -message ( 'FSC Commission -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
            
          }
         catch
          {
              echo "sending message failed"
-             echo $i.email
-             write-eventlog -logname Application -message ('EST Commission -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+             write-eventlog -logname Application -message ('FSC Commission -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
 
         }
  
@@ -114,19 +113,15 @@ foreach ($i in $list)
     
         $emailarray  = $I.EMAIL -split ','
             try{
-                echo $i.email
-
                 send-mailmessage -smtpserver $smtp -to $emailarray  -from "Commissions.Agent@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
-                write-eventlog -logname Application -message ( 'EST Commission -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+                write-eventlog -logname Application -message ( 'FSC Commission -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                
             }
             catch{
                     echo "sending message failed"
-
-                    echo $i.email
                    
-                    write-eventlog -logname Application -message ('EST Commission -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+                    write-eventlog -logname Application -message ('FSC Commission -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
             }
       }
       else
