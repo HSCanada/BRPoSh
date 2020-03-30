@@ -1,0 +1,87 @@
+ID      Level                            HSCanada    HSCanada    HSCanada    HSCanada    HSCanada            HSCanada
+       1       0                         
+ACTDW      
+ACTDWAdj   
+ACTDRAdj   
+ACTALLOC   ACTTOT              ACTADJ
+       2       0                         TotalAnalys TotalAnalys TotalAnalys TotalAnalys TotalAnalysis       TotalAnalysis
+       3       0                         Periodic    Periodic    Periodic    Periodic    Periodic            Periodic
+       4       0                         TotalVendor TotalVendor TotalVendor TotalVendor TotalVendor         TotalVendor
+       5       0                         SourceSys   SourceSys   SourceSys   SourceSys   SourceSys           SourceSys
+       6       0                         TotalProduc TotalProduc TotalProduc TotalProduc TotalProduct        TotalProduct
+       7       0                         TotalCustom TotalCustom TotalCustom TotalCustom TotalCustomer       TotalCustomer
+       8       0                         LOC         LOC         LOC         LOC         LOC                 LOC
+       9       0                         TotalBrand  TotalBrand  TotalBrand  TotalBrand  TotalBrand          TotalBrand
+      10       0                         WRKNG       WRKNG       WRKNG       WRKNG       WRKNG               WRKNG
+      11       0                         FY20        FY20        FY20        FY20        FY20                FY20
+      12       0                         Feb         Feb         Feb         Feb         Feb                 Feb
+      13       0NetSlsNet                     33,942          (8                              33,043,873          33,043
+      14       5SlsAgencyInc                                                                             2,2
+      15       5OthGross                                      (4                                  (471,289)           (4
+      16       5ManlRebills                                                                                           (2      243
+      17       5ShipNotBill                                                                              3,9
+      18       5MtrxNTagEquip                                                                       304,982
+      19       5MtrxMerch                     26,830                                          26,829,913          26,830
+      20       5MtrxEquip                     10,117                                          10,117,879          10,117
+      21       5SlsGiftCert                                                                         (33,494)
+      22       5CustRebates                                   (3                                  (364,401)           (3
+      23       5SlsFrgtRecDom                                                                       112,486
+      24       4CredResv                                                                            (39,161)
+      25       4ManlCred                                                                                                    (243,
+      26       4MtrxRetMerch                  (1,214                                          (1,214,837)         (1,214
+      27       4MtrxRetNTagEquip                                                                    (14,725)
+      28       4MtrxCredMerch                     (1                                              (196,059)           (1
+      29       4MtrxCredNTagEquip                 (3                                              (349,064)           (3
+      30       4MtrxCredEquip                 (1,644                                          (1,644,490)         (1,644
+      31       0
+      32       0CostGoodsSold                 19,449                                 2,4      21,788,540          21,788
+      33       4CgsMtrxNTagEquip                                                                    242,551
+      34       4CgsMtrxMerch                  14,230                                          14,809,197          14,230      578
+      35       4CgsMtrxEquip                     5,4                                 1,8         7,273,602           5,4   1,863,
+      36       4CgsManShpBld                                                                           96,17
+      37       3CgsAdjBaseSchdA                               (1                                  (220,833)           (1      (72
+      38       3CgsCredResv
+      39       3CgsIntRateBD                                                                             3,1
+      40       3CgsFXAmort                                                                                                    (12
+      41       4CgsPayrBonus
+      42       5CgsCommisFTOth                                                                                                (86
+      43       4CgsFTSocSec                                                                                                 (129,
+      44       4CgsFTOT
+      45       4CgsFTSalary                                                                                          1,1#########
+      46       4CgsIntraCoSellPayr
+      47       4CgsFTBenefitsEmpl                                                                                     (1      148
+      48       4CgsPensionEmpl                                                                                                (26
+      49       4CgsOthEmpl                                                                                                  (166,
+      50       4CgsLocalDeliv                                                                                               (103,
+      51       4CgsOthManFrgt                                                                                               (593,
+      52       4CgsPackSupp                                                                                                   (42
+      53       3CgsPremProg                                                                                                 (100,
+      54       4CgsPurDisc                                                                                            (1      169
+      55       4CgsPurchDiscAdj
+      56       4CgsPurchDiscLost
+      57       5CgsFrgtAllocInbnd                                                                                           (671,
+      58       5CgsOthGEEIP                                                                                                 (184,
+      59       5CgsOthGainsExp
+      60       4CgsInvcNoDciPod
+      61       4CgsInvcNoDciWhseAdj
+      62       4CgsNspAdjNet
+      63       4CgsRtvDmvCmDiff                                                                                               (21
+      64       4CgsRestockCollChg
+      65       4CgsChgrNSPResv
+      66       4CgsInvDmvCmDiff
+      67       4CgsWhseAdjTag
+      68       4CgsUnallocFrgtAdj                                                                                             (38
+      69       4CgsBnchPhysResv                                                                                               (25
+      70       3CgsDonateDestroy                                                                                              (58
+      71       3CgsCredAdj
+      72       3CgsFreeGoodsInc                                                                        45,78          (3      364
+      73       3CgsRTVAVarCost
+      74       3CgsRestockChrg                                                                                                (22
+      75       2CgsVendChgb                       (3                                              (461,115)           (4      (10
+      76       2CgsPrivateLabel
+      77       3CgsVendRebt                                                                                           (3      307
+      78       3CgsOffset                                                                                                   (355,
+      79       3CgsOthr                                                                                                       (68
+      80       3CgsPurch                                                                                              (3      355
+      81       3CgsOthGPPromo
+      82       3CgsSlsSamples
