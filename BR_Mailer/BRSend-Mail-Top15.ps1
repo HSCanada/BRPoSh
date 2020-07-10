@@ -30,6 +30,9 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
 $list=import-csv ($path + "J051_TOP15_FSC\"+"J051_Mailing_List.csv")
 
 
+#S:\BR\zDev\BR_Scripts\BRPoSh\BR_Mailer\J051_TOP15_FSC
+
+
 
 $startTime = Get-date
 $startLog = 'Top15 -' +$startTime
