@@ -14,20 +14,25 @@ will handle conversion downstream from file
 #>
 
 # init params
-$IN_FILE='CN-SCHN*.csv'
-$OUT_FILE='.\load\CN-SCHN_LOAD.csv' 
-$ARCHIVE_PATH='.\zArchive'
+
+$IN_FILE= 'CN-SCHN*.csv'
+$OUT_FILE= '.\load\CN-SCHN_LOAD.csv' 
+$ARCHIVE_PATH= '.\zArchive'
 $i=1
 
 try
 {
 	# clear output file
-	Remove-Item -Path $OUT_FILE
+    if (Test-Path $OUT_FILE) {
+      Remove-Item -Path $OUT_FILE
+    }
+    # Remove-Item -Path $OUT_FILE
 
 	# build output file
 	# add filename and line number to merged source files
 	#
 	Get-ChildItem -Filter $IN_FILE -PipelineVariable fileObj | 
+	Select-Object -ExpandProperty FullName |
 	Import-Csv | 
 	ForEach-Object {
 	Add-Member -InputObject $PSItem -MemberType NoteProperty -Name 'FILE_LINE' -Value ($i++) -PassThru; } | 
@@ -43,7 +48,11 @@ try
 }
 catch
 {
+    # pwd | Format-Table
 	write-output 'Error:  unable to prepare load file!!'
+    # test
+    Read-Host -Prompt "Press Enter to exit"
+
+
 }
-	
 
