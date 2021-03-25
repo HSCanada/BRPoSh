@@ -2,7 +2,7 @@
 .Synopsis
 gsp_merge - merges B and S GSP files to a common file
 .DESCRIPTION
-Long description
+last updated 24 Mar 21
 .INPUTS
 *.csv files from GSP
 .OUTPUTS
@@ -19,6 +19,13 @@ $IN_FILE= 'CN-SCHN*.csv'
 $OUT_FILE= '.\load\CN-SCHN_LOAD.csv' 
 $ARCHIVE_PATH= '.\zArchive'
 $i=1
+
+# do not process if files missing
+if (-not (Test-Path $IN_FILE)) {
+    return;
+}
+
+Write-Output "Processing GSP files.  Please wait..."
 
 try
 {
@@ -52,7 +59,5 @@ catch
 	write-output 'Error:  unable to prepare load file!!'
     # test
     Read-Host -Prompt "Press Enter to exit"
-
-
 }
 

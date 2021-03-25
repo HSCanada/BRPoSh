@@ -14,6 +14,7 @@ else {
 
 $cmd = "SELECT * FROM nes.bx_group_load"
 #$cmd = "SELECT * FROM nes.bx_group_load where bx_shipto in (3966556, 1661316, 1670574, 1667252, 3933776, 3930089)"
+#$cmd = "SELECT * FROM nes.bx_group_load where bx_shipto in (2247344)"
 
 $DataRows = Invoke-MSSQL -Server $bx_server -database $bx_database -SQLCommand $cmd -ConvertFromDataRow:$false
 
