@@ -16,7 +16,7 @@ Function LogWrite
 }
 
 # Path & file name for msg body
-$body=get-content ($path +"J015_COM_EST\ETU_MSG_EST_Comm.htm") | out-string
+$body=get-content ($path +"J015_Bonus_EST\ETU_MSG_EST_Bonus.htm") | out-string
 
 
 Clear-Host
@@ -25,7 +25,7 @@ if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Application\BRC
     -ErrorAction SilentlyContinue}
 
 # Path & file name for mailing list
-$list=import-csv ($path + "J015_COM_EST\"+"J015_Mailing_List.csv")
+$list=import-csv ($path + "J015_Bonus_EST\"+"J015_Mailing_List.csv")
 
 
 
@@ -94,7 +94,7 @@ foreach ($i in $list)
 
       
 		    echo $i.email
-	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Commissions.Agent@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
+	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Dave.Pinto@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
          
             write-eventlog -logname Application -message ( 'EST Bonus -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
@@ -116,7 +116,7 @@ foreach ($i in $list)
             try{
                 echo $i.email
 
-                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Commissions.Agent@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
+                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Dave.Pinto@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
                 write-eventlog -logname Application -message ( 'EST Bonus -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                
