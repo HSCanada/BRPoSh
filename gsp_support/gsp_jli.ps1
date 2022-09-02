@@ -56,3 +56,31 @@ $compress = @{
 }
 
 Compress-Archive @compress
+
+#----------------------------
+$assemblyPath ="C:\Program Files (x86)\WinSCP\"
+Add-Type -Path (Join-Path $assemblyPath "WinSCPnet.dll")
+
+$sessionOptions = New-Object WinSCP.SessionOptions -Property @{
+    Protocol = [WinSCP.Protocol]::Ftp
+    FtpMode = [WinSCP.FtpMode]::Passive
+    HostName = "ftp server ip address"
+    UserName = "ftp-username"
+    Password = "ftp-password"
+}
+
+$session = New-Object WinSCP.Session
+
+try
+{
+    # Connect
+    $session.Open($sessionOptions)
+
+    # Download files
+    $session.GetFiles("/home/ftp-username/uploads/*.txt", "C:\temp\").Check()
+}
+finally
+{
+    # Disconnect, clean up
+    $session.Dispose()
+}    
