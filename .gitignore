@@ -7,7 +7,7 @@ project.lock.json
 /Packages/
 *.nuget.props
 *.swp
-
+.env
 # user
 *.csv
 *.xlsx
