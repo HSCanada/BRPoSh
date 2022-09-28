@@ -48,6 +48,7 @@ try
 }
 catch
 {
+    # why is this triggered on sucess?
     write-output 'Error:  unable to publish file!!'
 }
 finally

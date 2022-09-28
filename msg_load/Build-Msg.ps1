@@ -86,7 +86,6 @@ Remove-Item ($msg_path + '*.zip')
 # zip files
 $compress = @{
   Path = $msg_path + $msg_prefix + '*.txt'
-#  Path = $msgItem_name, $msgcustomer_name,$msgtransaction_name    
   CompressionLevel = "Fastest"
   DestinationPath = ($msg_path + $zip_file_name)
   #update = true
@@ -94,41 +93,4 @@ $compress = @{
 
 Compress-Archive @compress -Update
 
-<#
-
-# SFTP
-
-# this needed?----------------------------
-$assemblyPath ="C:\Program Files (x86)\WinSCP\"
-Add-Type -Path (Join-Path $assemblyPath "WinSCPnet.dll")
-#
-
-# adding secrets to scrips ???
-$sessionOptions = New-Object WinSCP.SessionOptions -Property @{
-    Protocol = [WinSCP.Protocol]::SFtp
-    HostName = "BR.HSA.CA"
-    UserName = "user"
-    Password = "password"
-    SshHostKeyFingerprint = "ssh-ed25519 255 ljY2GOloVklxoVqB6szZLffDesRaE9bNPOFIhiLM0Ag"
-}
-
-$session = New-Object WinSCP.Session
-
-# SFTP
-try
-{
-    # Connect
-    $session.Open($sessionOptions)
-
-    # Download files
-   # $session.GetFiles("/home/user/*.xlsx", "C:\temp\").Check()
-    $session.putfiles("c:\temp\*.csv","/home/user/").Check()
-}
-finally
-{
-    # Disconnect, clean up
-    $session.Dispose()
-}  
-
-#>
   
