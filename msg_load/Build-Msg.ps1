@@ -12,7 +12,8 @@ file=./yyyymmdd_camsg.zip
 based on code from Jen Li
 #>
 
-Import-Module -Force -Name ..\BR_Util\InvokeSQL.psm1 
+Import-Module -Force -Name \\cahsionnlfp04\groups\BR\zDev\BR_Scripts\BRPoSh\BR_Util\InvokeSQL.psm1 
+# Import-Module -Force -Name ..\BR_Util\InvokeSQL.psm1 
 
 if($env:BRS_MODE -eq "PROD") {
     $bx_server = $env:BRS_SQLSERVER
@@ -44,9 +45,18 @@ $msg_path = $env:msg_path.Trim().Trim('"')
 $msg_prefix = $date_trx_end.ToString("yyyyMMdd")
 
 # SQL templates
+
+$cmd_item        = "SELECT * from msg.item"
+$cmd_customer    = "SELECT * from msg.customer"
+$cmd_transaction = "SELECT * FROM msg.[Transaction] where POSTED_DATE BETWEEN '" + $date_trx_end.AddDays(-$env:date_trx_days).ToString("yyyy-MM-dd") + "' and '" +  $date_trx_end.AddDays(0).ToString("yyyy-MM-dd") + "'"
+
+
+<#
 $cmd_item        = "SELECT top 10 * from msg.item"
 $cmd_customer    = "SELECT top 10 * from msg.customer"
 $cmd_transaction = "SELECT top 10 * FROM msg.[Transaction] where POSTED_DATE BETWEEN '" + $date_trx_end.AddDays(-$env:date_trx_days).ToString("yyyy-MM-dd") + "' and '" +  $date_trx_end.AddDays(0).ToString("yyyy-MM-dd") + "'"
+#>
+
 
 # SQL file names {root path} + {date prefix} + {filename.TXT}
 $msgItem_name =        $msg_prefix.tostring() + '_camsg_item.txt'
@@ -68,7 +78,7 @@ Write-Host $zip_file_name
 #item
 $DataRows = Invoke-MSSQL -Server $bx_server -database $bx_database -SQLCommand $cmd_item  -ConvertFromDataRow:$false
 #write-output $DataRows 
-$DataRows | export-csv -delimiter "`t" -path ($msg_path + $msgItem_name) -notype
+$DataRows | export-csv -delimiter "`t" -path ($msg_path + $msgItem_name) -notype 
 
 #customer
 $DataRows = Invoke-MSSQL -Server $bx_server -database $bx_database -SQLCommand $cmd_customer  -ConvertFromDataRow:$false

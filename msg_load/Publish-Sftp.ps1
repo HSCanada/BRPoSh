@@ -24,16 +24,16 @@ switch -File .env {
   }
 }
 
-<# test
+#<# test
 Write-Host $env:sftp_host
 Write-Host $env:sftp_user
 Write-Host $env:sftp_password_file
 Write-Host $env:sftp_local
 Write-Host $env:sftp_remote
-#>
+##>
 
 # save password (from prior)
-# (get-credential).password | ConvertFrom-SecureString | set-content "password.txt"
+# (get-credential).password | ConvertFrom-SecureString | set-content "password2.txt"
 $password = Get-Content $env:sftp_password_file | ConvertTo-SecureString
 $credential = New-Object System.Management.Automation.PsCredential($env:sftp_user,$password)
 
