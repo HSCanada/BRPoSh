@@ -24,13 +24,13 @@ switch -File .env {
   }
 }
 
-#<# test
+<# test
 Write-Host $env:sftp_host
 Write-Host $env:sftp_user
 Write-Host $env:sftp_password_file
 Write-Host $env:sftp_local
 Write-Host $env:sftp_remote
-##>
+#>
 
 # save password (from prior)
 # (get-credential).password | ConvertFrom-SecureString | set-content "password2.txt"
@@ -43,12 +43,10 @@ try
 {
     $Session = New-SFTPSession -Computername $env:sftp_host -credential $credential 
     $transferResult = Set-SFTPItem -SessionId $session.SessionID -Path $env:sftp_local -Destination $env:sftp_remote
-    $transferResult.Check()
 
 }
 catch
 {
-    # why is this triggered on sucess?
     write-output 'Error:  unable to publish file!!'
 }
 finally
@@ -57,3 +55,5 @@ finally
     $session.Disconnect()
 }  
 
+# keep this so that we can see any errors before exit
+Read-Host -Prompt "Press Enter to exit"
