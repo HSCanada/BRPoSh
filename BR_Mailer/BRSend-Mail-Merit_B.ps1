@@ -16,7 +16,7 @@ Function LogWrite
 }
 
 # Path & file name for msg body
-$body=get-content ($path +"Merit_Run Bonus\Email.Msg.Body\Email_Body.htm") | out-string
+$body=get-content ($path +"Merit_Run Bonus\Email.Msg.Body\EST_Bonus_Let.htm") | out-string
 
 
 Clear-Host
@@ -93,16 +93,15 @@ foreach ($i in $list)
         try{
 
       
-		
-	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Katie.Fletcher@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params -priority  high
-
-         
+		    echo  $i.email
+	        send-mailmessage -smtpserver $smtp -to $emailarray -from "Emily.Manlow@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params -priority  high       
             write-eventlog -logname Application -message ( 'Merit -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
            
          }
         catch
          {
              echo "sending message failed"
+             echo  $i.email
              write-eventlog -logname Application -message ('Merit -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
 
         }
@@ -113,7 +112,7 @@ foreach ($i in $list)
     
         $emailarray  = $I.EMAIL -split ','
             try{
-                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Katie.Fletcher@henryschein.ca" -subject $i.subject -body $body -bodyashtml -priority  high
+                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Emily.Manlow@henryschein.ca" -subject $i.subject -body $body -bodyashtml -priority  high
                 
                 write-eventlog -logname Application -message ( 'Merit -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                
