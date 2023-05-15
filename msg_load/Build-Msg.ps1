@@ -103,4 +103,5 @@ $compress = @{
 
 Compress-Archive @compress -Update
 
-  
+# keep this so that we can see any errors before exit
+Read-Host -Prompt "Press Enter to exit"  
