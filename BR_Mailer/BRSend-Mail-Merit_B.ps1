@@ -94,13 +94,13 @@ foreach ($i in $list)
 
       
 		    echo  $i.email
-	        send-mailmessage -smtpserver $smtp -to $emailarray -from "Emily.Manlow@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params -priority  high       
+	        send-mailmessage -smtpserver $smtp -to $emailarray -from "Nicole.Northey@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params -priority  high       
             write-eventlog -logname Application -message ( 'Merit -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
            
          }
         catch
          {
-             echo "sending message failed"
+             echo "sending message failed 1"
              echo  $i.email
              write-eventlog -logname Application -message ('Merit -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
 
@@ -112,13 +112,13 @@ foreach ($i in $list)
     
         $emailarray  = $I.EMAIL -split ','
             try{
-                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Emily.Manlow@henryschein.ca" -subject $i.subject -body $body -bodyashtml -priority  high
+                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Nicole.Northey@henryschein.ca" -subject $i.subject -body $body -bodyashtml -priority  high
                 
                 write-eventlog -logname Application -message ( 'Merit -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                
             }
             catch{
-                    echo "sending message failed"
+                    echo "sending message failed 2"
                    
                     write-eventlog -logname Application -message ('Merit -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
             }
