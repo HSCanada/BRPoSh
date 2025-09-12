@@ -7,10 +7,13 @@
 #on moving to window 10, need to set new script execution policy using ADMIN on Windows Powershell ISE: Set-ExecutionPolicy unrestricted
 #need to register: BRC for event log ( regedit: local maching: HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\application\BRC)
 
+$path="\\cahsionnlfp05\groups\BR\zDev\BR_Scripts\BRPosh\BR_Mailer\"
 
-$smtp=$env:BR_Mailing_Server
+$smtp="Usnymeht3.us.hsi.local"
 
-$path=$env:br_mailing_path  
+# $smtp=$env:BR_Mailing_Server
+#
+# $path=$env:br_mailing_path  
 
 
 
