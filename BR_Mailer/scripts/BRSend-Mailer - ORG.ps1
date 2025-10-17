@@ -59,8 +59,6 @@ write-output  $job_startLog_message | Add-Content $job_log_file
              # get message subject
             $mail_subject=$list[0].mail_subject
 
-           
-
             # build attachments list based on param first entry (max 3)
             $attachments=@()
             if($list[0].mail_attachment_1 ) {
@@ -83,22 +81,17 @@ write-output  $job_startLog_message | Add-Content $job_log_file
             $i=0
             
             # build mail list 
-            $mail_to=@()         
+            $mail_to=@()
 
             do{
 
                 foreach ($eachline in $list[$i])
                 {	
                     $mail_to += $eachline.mail_to -split ','
-                  
                 }
                 $i=$i +1
  
             }while ($i-le $list.count-1)
-
-            #buld mail_cc list
-            
-
 
 
                 #debug
