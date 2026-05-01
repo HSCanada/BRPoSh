@@ -94,7 +94,7 @@ foreach ($i in $list)
 
       
 		    echo $i.email
-	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Dave.Pinto@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
+	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Jeff.Roy@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
          
             write-eventlog -logname Application -message ( 'EST Bonus -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
@@ -116,7 +116,7 @@ foreach ($i in $list)
             try{
                 echo $i.email
 
-                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Dave.Pinto@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
+                send-mailmessage -smtpserver $smtp -to $emailarray  -from "Jeff.Roy@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
                 write-eventlog -logname Application -message ( 'EST Bonus -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                
