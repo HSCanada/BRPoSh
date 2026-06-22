@@ -2,7 +2,7 @@
 
 $HostsPath = "$env:windir\System32\drivers\etc\hosts"
 
-$NewEntry = "10.10.200.117`thub.br.hsa.ca draw.br.hsa.ca wiki.br.hsa.ca forgejo.br.hsa.ca vw.br.hsa.ca .br.hsa.ca"
+$NewEntry = "10.10.200.117`thub.br.hsa.ca home.br.hsa.ca draw.br.hsa.ca wiki.br.hsa.ca forgejo.br.hsa.ca vw.br.hsa.ca dockhand.br.hsa.ca .br.hsa.ca"
 #$NewEntry = "192.168.1.50`tmyserver.local"
 
 # Read the file and search for the entry
