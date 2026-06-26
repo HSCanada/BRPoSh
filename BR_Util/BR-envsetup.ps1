@@ -1,4 +1,5 @@
 ﻿# setup env for Genpact team, tmc, 19 Jun 26
+# may need to run Set-ExecutionPolicy RemoteSigned
 
 $HostsPath = "$env:windir\System32\drivers\etc\hosts"
 
