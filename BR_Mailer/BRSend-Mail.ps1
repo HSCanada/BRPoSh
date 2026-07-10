@@ -1,48 +1,36 @@
 ﻿#Daily Sales Mailer
+# tmc, 10 Jul 26, fix env and logging for genpact 
 
 #before using this mailer, two the following system environment variables need to be set up: 
 	#BR_Mailing_Path: 	S:\BR\zDev\BR_Scripts\BRPoSh\BR_Mailer\
 	#BR_Mailing_Server: 	Usnymeht3.us.hsi.local 
 
 #on moving to window 10, need to set new script execution policy using ADMIN on Windows Powershell ISE: Set-ExecutionPolicy unrestricted
-#need to register: BRC for event log ( regedit: local maching: HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\application\BRC)
 
-$path="\\cahsionnlfp05\groups\BR\zDev\BR_Scripts\BRPosh\BR_Mailer\"
-
-$smtp="Usnymeht3.us.hsi.local"
-
-# $smtp=$env:BR_Mailing_Server
-#
-# $path=$env:br_mailing_path  
-
-
-
-#set up log file
-
+$smtp=$env:BR_Mailing_Server
+$path=$env:br_mailing_path  
 $Logfile = "$path" + "\log\mailing.log" 
 
 Function LogWrite
 {
    Param ([string]$logstring)
 
-   Add-content $Logfile -value $logstring
+    Add-Content -Path $Logfile -Value "`n$logstring" -Force
+    Write-Host $logstring -ForegroundColor Green
 }
 
 
 
 Clear-Host
-if (!(test-path HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\application\BRC))`
-    {new-eventlog -Logname Application -source BRC `  #{new-eventlog -Logname Application -source BRC `
-    -ErrorAction SilentlyContinue}
-
 
 #branch DS mailing list
 
 $list=import-csv ("S:\BR\BR_Sales\Working\J011_Mailing_List.csv")
 
 $startTime = Get-date
-$startLog = 'Branch Daily Sales -' +$startTime
-write-eventlog -logname Application -message $startlog -source BRC -ENTRYTYPE information -EventId 1 -category 0 
+$startLog = 'Branch Daily Sales -' +$startTime + ' start'
+# write-eventlog -logname Application -message $startlog -source BRC -ENTRYTYPE information -EventId 1 -category 0 
+LogWrite $startlog
 
 
 #get attachments, max 3 attachments
@@ -89,7 +77,7 @@ foreach ($i in $list)
            
          
         	}                                           
-        	echo $attachments
+            LogWrite ( 'Branch Daily Sales -' +$currTime+ '  attachments = '  + $attachments)
 
 	
 
@@ -98,19 +86,16 @@ foreach ($i in $list)
 
 	
         	$emailarray  = $I.EMAIL -split ','
+            $currTime = Get-date
 
         	try{
 		
 	        	send-mailmessage -smtpserver $smtp -to $emailarray -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high @params 
-           
-            		write-eventlog -logname Application -message ( 'Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+                LogWrite ( 'Branch Daily Sales -' +$currTime+ '  to  '  + $i.email + "    " + $attach )
             
          	}
         	catch{
-             		echo "sending message failed"
-           
-             		write-eventlog -logname Application -message ('Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
-
+                LogWrite ( 'Branch Daily Sales -' +$currTime+ '  to  '  + $i.email + "   - Fail to send")
         	}
  
     	}
@@ -118,21 +103,26 @@ foreach ($i in $list)
     	elseif($i.flag -eq 1){
     
         	$emailarray  = $I.EMAIL -split ','
+            $currTime = Get-date
+
            	try{
                 	send-mailmessage -smtpserver $smtp -to $emailarray  -from "businessreporting.canada@henryschein.ca" -subject $i.subject -body $i.msg -bodyashtml -priority  high                 
-                	write-eventlog -logname Application -message ( 'Branch Daily Sales -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+                    LogWrite ( 'Branch Daily Sales -' +$currTime+ '  to  '  + $i.email )
                
             	}
             	catch{
-            		echo "sending message failed"
-                	write-eventlog -logname Application -message ('Branch Daily Sales -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+                    LogWrite ( 'Branch Daily Sales -' +$currTime+ '  to  '  + $i.email + "   - Fail to send")
+
             	}
       	}
       	else{
+            $currTime = Get-date
 
-            echo "flag set to 0, no message sent"
+            LogWrite ( 'Branch Daily Sales -' +$currTime+ "flag set to 0, no message sent")
     	}    
 	
 }
 
 
+# LogWrite
+LogWrite ( "Done.")
