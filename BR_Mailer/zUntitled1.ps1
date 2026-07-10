@@ -1,1 +1,0 @@
-﻿Invoke-Sqlcmd -Query "SELECT * from dbo.BRS_Customer where shipto=1520908;" -ServerInstance "cahsionnlsql1\dev_brsales"
