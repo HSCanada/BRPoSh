@@ -2,6 +2,8 @@
 # created by jli
 # 20 Nov 18, tmc, mail from updated
 # 21 Nov 18, jli, standardize mail sending
+#on moving to window 10, need to set new script execution policy using ADMIN on Windows Powershell ISE: Set-ExecutionPolicy unrestricted
+
 
 # todo:  
 # make this parameter driven (body, emails, attach) = Param 1 = start path, Param 2 = Max group (1 - 100)
@@ -30,10 +32,15 @@ $job_path=$br_mailer_path +  $job_code +"\"
 $job_log_file=$job_path + 'log\Mail_Log.txt'
 
 
+#temp 
+Write-Host "temp test mode hack.   email = ON.   long term incorporate this script with mainline mailer...`n" -ForegroundColor Red
+Write-Host  "job path = " $br_mailer_path " job code = "  $job_code "`n"
 
 #beging log message
 $job_startLog_message = $job_code +" - Log - " + (Get-Date).ToLocalTime()
 write-output  $job_startLog_message | Add-Content $job_log_file
+# temp output to screen
+Write-Host $job_startLog_message -ForegroundColor Green
 
 
 # ** TC Assume G for now - we do not have FSC mode, comment out
@@ -107,17 +114,25 @@ write-output  $job_startLog_message | Add-Content $job_log_file
 
                 # Send email
             try { 
-
+                # temp disable email for testing
                 send-mailmessage -smtpserver $global_smtp_server -to $mail_to -from $job_mail_from -subject $mail_subject -body $mail_body -bodyashtml @mail_attachments     
+                #
+
                 #write log message 
                 $job_success_message = "Completed - email sent from |" +$job_mail_from + "|To|" + $mail_to + "| with attachment |"+$attachments+  "|"+  (Get-Date).ToLocalTime()
                 write-output $job_success_message | Add-Content $job_log_file
+                # temp output to screen
+                Write-Host $job_success_message -ForegroundColor Green
+
     
             } 
             catch {
                 #write log message
                 $job_failure_message = "Failed - email sent from |" +$job_mail_from + "|To|" + $mail_to + "| with attachment |"+$attachments+  "|"+  (Get-Date).ToLocalTime()  
                 write-output  $job_failure_message | Add-Content $job_log_file
+                # temp output to screen
+                Write-Host $job_failure_message -ForegroundColor Red
+
     
 
            }
@@ -125,3 +140,6 @@ write-output  $job_startLog_message | Add-Content $job_log_file
         }
     }
 #}
+
+# temp pause for debugging
+pause
