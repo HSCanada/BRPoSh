@@ -126,3 +126,7 @@ foreach ($i in $list)
 
 # LogWrite
 LogWrite ( "Done.")
+
+# temp pause for debugger
+Pause
+
