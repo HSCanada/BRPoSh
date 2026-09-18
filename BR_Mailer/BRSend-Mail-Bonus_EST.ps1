@@ -31,7 +31,7 @@ $startLog = 'EST Bonus -' +$startTime
 
 
 
-write-eventlog -logname Application -message $startlog -source BRC -ENTRYTYPE information -EventId 1 -category 0 
+#write-eventlog -logname Application -message $startlog -source BRC -ENTRYTYPE information -EventId 1 -category 0 
 
 foreach ($i in $list)
 {	
@@ -94,14 +94,14 @@ foreach ($i in $list)
 	       send-mailmessage -smtpserver $smtp -to $emailarray -from "Jeff.Roy@henryschein.ca" -subject $i.subject -body $body -bodyashtml @params 
 
          
-            write-eventlog -logname Application -message ( 'EST Bonus -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+           # write-eventlog -logname Application -message ( 'EST Bonus -' +$startTime+ '  to  '  + $i.email + "    " + $attach ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
            
          }
         catch
          {
              echo "sending message failed"
              echo $i.email
-             write-eventlog -logname Application -message ('EST Bonus -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+            # write-eventlog -logname Application -message ('EST Bonus -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
 
         }
  
@@ -115,7 +115,7 @@ foreach ($i in $list)
 
                 send-mailmessage -smtpserver $smtp -to $emailarray  -from "Jeff.Roy@henryschein.ca" -subject $i.subject -body $body -bodyashtml 
                 
-                write-eventlog -logname Application -message ( 'EST Bonus -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
+               # write-eventlog -logname Application -message ( 'EST Bonus -' +$startTime+ '  to  '  + $i.email ) -source BRC -ENTRYTYPE information -EventId 1 -category 0
                
             }
             catch{
@@ -123,7 +123,7 @@ foreach ($i in $list)
 
                     echo $i.email
                    
-                    write-eventlog -logname Application -message ('EST Bonus -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
+                  #  write-eventlog -logname Application -message ('EST Bonus -' +$startTime+ '  to  '  + $i.email + "   - Fail to send") -source BRC -ENTRYTYPe FailureAudit -EventId 2 -category 1
             }
       }
       else
